@@ -1,0 +1,42 @@
+:root {
+    --bs-danger: #c8102e;
+    --bs-danger-rgb: 200, 16, 46;
+    --bs-primary: #c8102e;
+    --bs-primary-rgb: 200, 16, 46;
+    --bs-focus-ring-color: rgba(200, 16, 46, 0.25);
+    --bs-link-color: #c8102e;
+    --bs-link-color-rgb: 200, 16, 46;
+    --bs-link-hover-color: #96281b;
+}
+
+.text-xs {
+    font-size: 0.78rem;
+}
+
+::placeholder {
+    color: var(--bs-secondary-color);
+    font-size: small;
+}
+
+body {
+    background-color: #fdf5f5;
+}
+
+.navbar,
+footer {
+    background-color: #c8102e;
+}
+
+.navbar .nav-link,
+.navbar .navbar-brand,
+footer,
+footer a,
+footer .text-secondary {
+    color: #ffffff !important;
+}
+
+.navbar .nav-link:hover,
+footer a:hover {
+    color: rgba(255, 255, 255, 0.8) !important;
+    text-decoration: underline;
+}

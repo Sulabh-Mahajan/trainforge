@@ -1,0 +1,144 @@
+.navbar {
+    height: 80px;
+}
+body {
+    padding-top: 80px;
+    background-color: #fdf5f5;
+}
+
+.hero-headline {
+    font-size: clamp(2.2rem, 5vw, 3.2rem);
+    letter-spacing: -1px;
+    line-height: 1.1;
+}
+
+.text-accent {
+    color: var(--bs-danger);
+}
+
+.hero-badge {
+    background-color: rgba(var(--bs-danger-rgb), 0.1) !important;
+    color: var(--bs-danger) !important;
+    border: 1px solid rgba(var(--bs-danger-rgb), 0.2);
+}
+
+/* Carousel frame: give it a proper border & shadow */
+.hero-carousel-frame {
+    border: 1px solid #e5e7eb;
+    box-shadow:
+        0 4px 6px rgba(0, 0, 0, 0.04),
+        0 12px 32px rgba(0, 0, 0, 0.08);
+}
+
+/* Carousel indicators: pill shape matching brand */
+.carousel-indicators button {
+    width: 24px;
+    height: 4px;
+    border-radius: 100px;
+    border: none;
+    background-color: #dee2e6;
+    opacity: 1;
+    transition:
+        background-color 0.2s,
+        width 0.2s;
+}
+
+.carousel-indicators button.active {
+    background-color: var(--bs-danger);
+    width: 36px;
+}
+
+/* Floating cards over the carousel */
+.float-card-top {
+    position: absolute;
+    top: -14px;
+    right: -10px;
+    z-index: 10;
+    font-size: 0.78rem;
+    font-weight: 600;
+}
+
+.float-card-bottom {
+    position: absolute;
+    bottom: 32px;
+    left: -14px;
+    z-index: 10;
+    font-size: 0.78rem;
+    font-weight: 600;
+}
+
+.float-icon-red {
+    background-color: rgba(var(--bs-danger-rgb), 0.1);
+    color: var(--bs-danger);
+}
+
+.float-icon-green {
+    background-color: #dcfce7;
+    color: var(--bs-success);
+}
+
+.ai-card {
+    transition: 0.3s ease;
+}
+
+.ai-card:hover {
+    transform: translateY(-5px);
+}
+
+.card-action {
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease;
+    
+    position: relative;
+}
+
+.card-action::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background-color: transparent;
+    transition: background-color 0.25s ease;
+}
+
+.card-action:hover::before {
+    background-color: var(--bs-danger);
+}
+
+.card-action:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 16px 40px rgba(var(--bs-danger-rgb), 0.12) !important;
+    border-color: var(--bs-danger) !important;
+}
+
+.faq-section {
+    background-color: #fff8f8;
+}
+
+.accordion-button:not(.collapsed) {
+    color: var(--bs-danger);
+    background-color: transparent;
+    box-shadow: none;
+    font-weight: 600;
+}
+
+.accordion-button:not(.collapsed)::after {
+    filter: invert(14%) sepia(90%) saturate(4000%) hue-rotate(340deg)
+        brightness(80%);
+}
+
+.faq-item {
+    border: 1px solid #f0e0e0 !important;
+    transition: box-shadow 0.2s ease;
+}
+
+.faq-item:hover {
+    box-shadow: 0 4px 16px rgba(var(--bs-danger-rgb), 0.08);
+}
+
+.faq-contact {
+    background-color: var(--bs-danger);
+}

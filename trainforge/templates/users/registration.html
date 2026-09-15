@@ -1,0 +1,322 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Register — TrainForge</title>
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+        />
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+        />
+        <link rel="stylesheet" href="{% static 'css/registrations.css' %}">
+    </head>
+
+    <body>
+        <!-- NAVBAR -->
+        <nav class="navbar navbar-expand-lg navbar-dark py-3 shadow-sm">
+            <div class="container px-4">
+                <a class="navbar-brand" href="{% url 'home' %}">
+                    <svg height="34" viewBox="40 25 420 110" role="img" aria-label="TrainForge">
+                        <style>
+                            .wm-reg {
+                                font-family: sans-serif;
+                                font-size: 52px;
+                                font-weight: 600;
+                                fill: #ffffff;
+                                letter-spacing: -1px;
+                            }
+                        </style>
+                        <rect x="40" y="30" width="80" height="80" rx="14" fill="white" fill-opacity="0.2" />
+                        <rect x="57" y="80" width="12" height="26" rx="2" fill="white" opacity="0.55" />
+                        <rect x="74" y="62" width="12" height="44" rx="2" fill="white" opacity="0.78" />
+                        <rect x="91" y="47" width="12" height="59" rx="2" fill="white" />
+                        <text x="142" y="97" class="wm-reg">
+                            Train<tspan fill="rgba(255,255,255,0.7)">Forge</tspan>
+                        </text>
+                        <line x1="133" y1="38" x2="133" y2="118" stroke="rgba(255,255,255,0.3)" stroke-width="1" />
+                    </svg>
+                </a>
+                <div class="ms-auto">
+                    <span class="text-white opacity-75 small me-2">Already have an account?</span>
+                    <a href="{% url 'login' %}" class="btn btn-outline-light btn-sm px-3">Log in</a>
+                </div>
+            </div>
+        </nav>
+
+        <!-- MAIN -->
+        <div class="mx-auto py-5 px-3" style="max-width: 780px">
+            <!-- Page header -->
+            <div class="text-center mb-4">
+                <div class="step-badge">
+                    <i class="bi bi-person-plus-fill"></i>
+                    Trainer Registration
+                </div>
+                <h1 class="text-dark">Create your TrainForge account</h1>
+                <p class="text-secondary">
+                    Set up your profile and start managing clients in minutes.
+                </p>
+            </div>
+
+            <!-- Form card -->
+            <div class="register-card">
+                <!-- Social login -->
+                <div class="row g-2 mb-4">
+                    <div class="col-6">
+                        <a href="{% url 'google_login' %}" 
+                        class="btn-social d-flex align-items-center justify-content-center gap-2 w-100">
+                            <svg width="16" height="16" viewBox="0 0 48 48">
+                                <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.08 17.74 9.5 24 9.5z"/>
+                                <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+                                <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+                                <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.31-8.16 2.31-6.26 0-11.57-3.59-13.46-8.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+                            </svg>
+                            Continue with Google
+                        </a>
+                    </div>
+                    <div class="col-6">
+                        <a href="{% url 'github_login' %}" 
+                        class="btn-social d-flex align-items-center justify-content-center gap-2 w-100">
+                            <i class="bi bi-github fs-6"></i>
+                            Continue with GitHub
+                        </a>
+                    </div>
+                </div>
+
+                <div class="divider-text mb-4">or register with email</div>
+
+                <form method="POST" novalidate>
+                    {% csrf_token %}
+
+                    {% if errors %}
+                        <div class="alert alert-danger">
+                            {{ errors }}
+                        </div>
+                    {% endif %}
+
+                    <!-- PERSONAL INFO -->
+                    <div class="form-section-title mb-3 pb-2">
+                        <i class="bi bi-person me-1"></i> Personal information
+                    </div>
+                    <div class="row g-3 mb-4">
+                        <div class="col-sm-6">
+                            <label class="form-label mb-1" for="firstName">First name</label>
+                            <input
+                                type="text"
+                                class="form-control"
+                                id="firstName"
+                                name="first_name"
+                                placeholder="e.g. Sarah"
+                                value="{{ form_data.first_name|default:'' }}"
+                                required
+                            />
+                        </div>
+                        <div class="col-sm-6">
+                            <label class="form-label mb-1" for="lastName">Last name</label>
+                            <input
+                                type="text"
+                                class="form-control"
+                                id="lastName"
+                                name="last_name"
+                                placeholder="e.g. Johnson"
+                                value="{{ form_data.last_name|default:'' }}"
+                                required
+                            />
+                        </div>
+                        <div class="col-sm-6">
+                            <label class="form-label mb-1" for="email">Email address</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+                                <input
+                                    type="email"
+                                    class="form-control"
+                                    id="email"
+                                    name="email"
+                                    placeholder="you@example.com"
+                                    value="{{ form_data.email|default:'' }}"
+                                    required
+                                />
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <label class="form-label mb-1" for="phone">Phone number</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-telephone"></i></span>
+                                <input
+                                    type="tel"
+                                    class="form-control"
+                                    id="phone"
+                                    name="phone"
+                                    placeholder="+61 400 000 000"
+                                    value="{{ form_data.phone|default:'' }}"
+                                />
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label mb-1" for="password">Password</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-lock"></i></span>
+                                <input
+                                    type="password"
+                                    class="form-control"
+                                    id="password"
+                                    name="password"
+                                    placeholder="Min. 8 characters"
+                                    required
+                                />
+                                <button
+                                    class="input-group-text border-start-0"
+                                    type="button"
+                                    id="togglePassword"
+                                    style="border-radius: 0 10px 10px 0; cursor: pointer;"
+                                >
+                                    <i class="bi bi-eye" id="eyeIcon"></i>
+                                </button>
+                            </div>
+                            <div class="strength-bar mt-2">
+                                <div class="strength-fill" id="strengthFill"></div>
+                            </div>
+                            <div class="d-flex justify-content-between mt-1">
+                                <small class="text-secondary" style="font-size: 0.72rem">Password strength</small>
+                                <small id="strengthLabel" style="font-size: 0.72rem"></small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- PROFESSIONAL INFO -->
+                    <div class="form-section-title mb-3 pb-2">
+                        <i class="bi bi-award me-1"></i> Professional background
+                    </div>
+                    <div class="row g-3 mb-4">
+                        <div class="col-sm-6">
+                            <label class="form-label mb-1" for="experience">Years of experience</label>
+                            <select class="form-select" id="experience" name="experience" required>
+                                <option value="" disabled selected>Select range</option>
+                                <option value="less_than_1" {% if form_data.experience == 'less_than_1' %}selected{% endif %}>Less than 1 year</option>
+                                <option value="1_2" {% if form_data.experience == '1_2' %}selected{% endif %}>1 – 2 years</option>
+                                <option value="3_5" {% if form_data.experience == '3_5' %}selected{% endif %}>3 – 5 years</option>
+                                <option value="6_10" {% if form_data.experience == '6_10' %}selected{% endif %}>6 – 10 years</option>
+                                <option value="10_plus" {% if form_data.experience == '10_plus' %}selected{% endif %}>10+ years</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-6">
+                            <label class="form-label mb-1" for="certification">Primary certification</label>
+                            <select class="form-select" id="certification" name="certification" required>
+                                <option value="" disabled selected>Select certification</option>
+                                <option value="cert3 in fitness" {% if form_data.certification == 'cert3 in fitness' %}selected{% endif %}>Certificate III in Fitness</option>
+                                <option value="cert4 in fitness" {% if form_data.certification == 'cert4 in fitness' %}selected{% endif %}>Certificate IV in Fitness</option>
+                                <option value="acsm"  {% if form_data.certification == 'acsm'  %}selected{% endif %}>ACSM Certified Personal Trainer</option>
+                                <option value="nasm-cpt"  {% if form_data.certification == 'nasm-cpt'  %}selected{% endif %}>NASM-CPT</option>
+                                <option value="ace personal trainer"   {% if form_data.certification == 'ace personal trainer'   %}selected{% endif %}>ACE Personal Trainer</option>
+                                <option value="other" {% if form_data.certification == 'other' %}selected{% endif %}>Other</option>
+                            </select>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label mb-1">
+                                Specialisations
+                                <span class="text-secondary fw-normal">(select all that apply)</span>
+                            </label>
+                            <div class="mt-2">
+                                <input type="checkbox" class="spec-check" id="spec1" name="specializations" value="strength"    {% if 'strength'    in form_data.specializations %}checked{% endif %} />
+                                <label class="spec-label" for="spec1"><i class="bi bi-lightning-charge"></i> Strength & Conditioning</label>
+
+                                <input type="checkbox" class="spec-check" id="spec2" name="specializations" value="weight_loss" {% if 'weight_loss' in form_data.specializations %}checked{% endif %} />
+                                <label class="spec-label" for="spec2"><i class="bi bi-heart-pulse"></i> Weight Loss</label>
+
+                                <input type="checkbox" class="spec-check" id="spec3" name="specializations" value="hiit"        {% if 'hiit'        in form_data.specializations %}checked{% endif %} />
+                                <label class="spec-label" for="spec3"><i class="bi bi-activity"></i> HIIT & Cardio</label>
+
+                                <input type="checkbox" class="spec-check" id="spec4" name="specializations" value="flexibility" {% if 'flexibility' in form_data.specializations %}checked{% endif %} />
+                                <label class="spec-label" for="spec4"><i class="bi bi-person-arms-up"></i> Flexibility & Mobility</label>
+
+                                <input type="checkbox" class="spec-check" id="spec5" name="specializations" value="sports"      {% if 'sports'      in form_data.specializations %}checked{% endif %} />
+                                <label class="spec-label" for="spec5"><i class="bi bi-trophy"></i> Sports Performance</label>
+
+                                <input type="checkbox" class="spec-check" id="spec6" name="specializations" value="rehab"       {% if 'rehab'       in form_data.specializations %}checked{% endif %} />
+                                <label class="spec-label" for="spec6"><i class="bi bi-person-wheelchair"></i> Rehabilitation</label>
+
+                                <input type="checkbox" class="spec-check" id="spec7" name="specializations" value="nutrition"   {% if 'nutrition'   in form_data.specializations %}checked{% endif %} />
+                                <label class="spec-label" for="spec7"><i class="bi bi-brilliance"></i> Nutrition Coaching</label>
+
+                                <input type="checkbox" class="spec-check" id="spec8" name="specializations" value="group"       {% if 'group'       in form_data.specializations %}checked{% endif %} />
+                                <label class="spec-label" for="spec8"><i class="bi bi-people"></i> Group Training</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- PLAN SELECTION -->
+                    <div class="form-section-title mb-3 pb-2">
+                        <i class="bi bi-credit-card me-1"></i> Choose your plan
+                    </div>
+                    <div class="row g-3 mb-4">
+                        <div class="col-sm-4">
+                            <input type="radio" class="plan-option" name="plan" id="planStarter" value="Free"    {% if form_data.plan == 'Free'    %}checked{% endif %} />
+                            <label class="plan-label" for="planStarter">
+                                <span class="plan-name">Starter</span>
+                                <span class="plan-price">Free</span>
+                                <span class="plan-desc mt-1">Up to 3 clients, basic tracking</span>
+                            </label>
+                        </div>
+                        <div class="col-sm-4">
+                            <input type="radio" class="plan-option" name="plan" id="planPro" value="Pro"         {% if form_data.plan == 'Pro' or not form_data %}checked{% endif %} />
+                            <label class="plan-label" for="planPro">
+                                <span class="plan-badge">Most popular</span>
+                                <span class="plan-name">Pro</span>
+                                <span class="plan-price">$29<span class="text-secondary fw-normal" style="font-size: 0.75rem">/mo</span></span>
+                                <span class="plan-desc mt-1">Up to 30 clients, full features</span>
+                            </label>
+                        </div>
+                        <div class="col-sm-4">
+                            <input type="radio" class="plan-option" name="plan" id="planElite" value="Elite"     {% if form_data.plan == 'Elite' %}checked{% endif %} />
+                            <label class="plan-label" for="planElite">
+                                <span class="plan-name">Elite</span>
+                                <span class="plan-price">$79<span class="text-secondary fw-normal" style="font-size: 0.75rem">/mo</span></span>
+                                <span class="plan-desc mt-1">Unlimited clients, white-label</span>
+                            </label>
+                        </div>
+                    </div> 
+
+                    <!-- TERMS -->
+                    <div class="mb-4">
+                        <div class="form-check mb-2">
+                            <input class="form-check-input" type="checkbox" id="terms" name="terms" required />
+                            <label class="form-check-label small text-secondary" for="terms">
+                                I agree to the
+                                <a href="#" class="text-danger">Terms of Service</a>
+                                and
+                                <a href="#" class="text-danger">Privacy Policy</a>
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="marketing" name="marketing" />
+                            <label class="form-check-label small text-secondary" for="marketing">
+                                Send me tips, updates and offers from TrainForge
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- SUBMIT -->
+                    <button type="submit" class="btn-register">
+                        Create my account <i class="bi bi-arrow-right ms-1"></i>
+                    </button>
+
+                    <p class="text-center text-secondary small mt-3 mb-0">
+                        Already have an account?
+                        <a href="{% url 'login' %}" class="text-danger fw-semibold">Log in</a>
+                    </p>
+                </form>
+            </div>
+        </div>
+
+        <script
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+            crossorigin="anonymous"
+        ></script>
+        <script src="{% static 'js/registration.js' %}"></script>
+    </body>
+</html>

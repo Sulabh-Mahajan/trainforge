@@ -1,0 +1,72 @@
+.login-card {
+    max-width: 440px;
+    border: 1px solid #f0e0e0;
+    box-shadow: 0 4px 24px rgba(200, 16, 46, 0.06);
+}
+
+/* ── ICON ── */
+.login-icon-wrap {
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
+    background-color: rgba(200, 16, 46, 0.08);
+    border: 1px solid rgba(200, 16, 46, 0.15);
+    font-size: 1.4rem;
+}
+
+.form-control,
+.input-group-text {
+    background-color: #fafafa;
+}
+
+.form-control:focus {
+    box-shadow: none;
+    background-color: #fafafa;
+}
+
+.input-group:focus-within {
+    box-shadow: 0 0 0 1px rgba(var(--bs-danger-rgb), 0.1);
+    border-radius: 0.375rem;
+}
+
+.input-group:focus-within .input-group-text,
+.input-group:focus-within .form-control,
+.input-group:focus-within .toggle-password {
+    border-color: var(--bs-danger);
+}
+
+.form-check-input:checked {
+    background-color: var(--bs-danger);
+    border-color: var(--bs-danger);
+}
+.form-check-input:focus {
+    box-shadow: 0 0 0 1px rgba(200, 16, 46, 0.15);
+    border-color: var(--bs-danger);
+}
+
+/* ── SUBMIT BUTTON ── */
+.btn-login {
+    font-weight: 700;
+    padding: 0.8rem 2rem;
+    border-radius: 12px;
+}
+.btn-login:hover {
+    transform: translateY(-1px);
+}
+.btn-login:active {
+    transform: none;
+}
+
+/* ── SOCIAL BUTTONS ── */
+.btn-social {
+    border: 1.5px solid #e5e7eb;
+    border-radius: 10px;
+    padding: 0.6rem 1rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.btn-social:hover {
+    border-color: #9ca3af;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    color: #111;
+}  

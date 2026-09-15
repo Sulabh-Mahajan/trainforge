@@ -1,0 +1,629 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Training Plans — TrainForge</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"/>
+    <link rel="stylesheet" href="{% static 'css/training_plan.css' %}">
+    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+</head>
+
+<body>
+
+<!-- ── SIDEBAR ── -->
+<aside class="sidebar d-flex flex-column" id="sidebar">
+    <div class="sidebar-logo px-4 py-3 border-bottom border-sidebar">
+        <svg height="30" viewBox="40 25 420 110" role="img" aria-label="TrainForge">
+            <style>.wm-tp{font-family:sans-serif;font-size:52px;font-weight:600;fill:#fff;letter-spacing:-1px}</style>
+            <rect x="40" y="30" width="80" height="80" rx="14" fill="white" fill-opacity="0.2"/>
+            <rect x="57" y="80" width="12" height="26" rx="2" fill="white" opacity="0.55"/>
+            <rect x="74" y="62" width="12" height="44" rx="2" fill="white" opacity="0.78"/>
+            <rect x="91" y="47" width="12" height="59" rx="2" fill="white"/>
+            <text x="142" y="97" class="wm-tp">Train<tspan fill="rgba(255,255,255,0.7)">Forge</tspan></text>
+            <line x1="133" y1="38" x2="133" y2="118" stroke="rgba(255,255,255,0.3)" stroke-width="1"/>
+        </svg>
+    </div>
+    <nav class="sidebar-nav flex-grow-1 px-3 py-3">
+        <div class="nav-section-label mb-2">Main</div>
+        <ul class="list-unstyled mb-4">
+            <li><a href="{% url 'dashboard' %}" class="sidebar-link"><i class="bi bi-grid-1x2-fill"></i><span>Dashboard</span></a></li>
+            <li><a href="{% url 'training_plans' %}" class="sidebar-link active"><i class="bi bi-clipboard2-pulse-fill"></i><span>Training Plans</span></a></li>
+            <li><a href="{% url 'schedule' %}" class="sidebar-link"><i class="bi bi-calendar3"></i><span>Schedule</span></a></li>
+            <li><a href="{% url 'progress' %}" class="sidebar-link"><i class="bi bi-graph-up-arrow"></i><span>Progress</span></a></li>
+        </ul>
+        <div class="nav-section-label mb-2">Account</div>
+        <ul class="list-unstyled mb-0">
+            <li><a href="{% url 'login' %}" class="sidebar-link sidebar-link-danger"><i class="bi bi-box-arrow-left"></i><span>Log out</span></a></li>
+        </ul>
+    </nav>
+    <div class="sidebar-profile px-3 py-3 border-top border-sidebar d-flex align-items-center gap-2">
+        <div class="avatar-circle flex-shrink-0">{{ request.user.first_name|first }}{{ request.user.last_name|first }}</div>
+        <div class="overflow-hidden">
+            <div class="sidebar-profile-name">{{ request.user.first_name }} {{ request.user.last_name }}</div>
+            <div class="sidebar-profile-role">{{ request.user.trainer.subscription.plan_name }} Plan</div>
+        </div>
+    </div>
+</aside>
+
+<!-- ── MAIN WRAPPER ── -->
+<div class="main-wrapper">
+
+    <!-- TOPBAR -->
+    <header class="topbar d-flex align-items-center justify-content-between px-4 py-3 border-bottom">
+        <div class="d-flex align-items-center gap-3">
+            <button class="btn btn-sm sidebar-toggle d-lg-none" id="sidebarToggle">
+                <i class="bi bi-list fs-5"></i>
+            </button>
+            <div>
+                <h5 class="mb-0 fw-semibold text-dark">Training Plans</h5>
+                <p class="mb-0 text-secondary small">{{ plans|length }} plan{{ plans|length|pluralize }} created</p>
+            </div>
+        </div>
+        <div class="d-flex align-items-center gap-2">
+            <button class="btn topbar-icon-btn position-relative">
+                <i class="bi bi-bell fs-5"></i>
+                <span class="notif-dot"></span>
+            </button>
+            <div class="avatar-circle avatar-sm">{{ request.user.first_name|first }}{{ request.user.last_name|first }}</div>
+        </div>
+    </header>
+
+    <!-- CONTENT -->
+    <main class="dashboard-content px-4 py-4" id="mainContent">
+
+        <!-- ── PLANS LIST VIEW ── -->
+        <div id="plansView">
+            <!-- Toolbar -->
+            <div class="d-flex align-items-center justify-content-between flex-wrap gap-3 mb-4">
+                <div class="d-flex align-items-center gap-2 flex-wrap">
+                    <div class="input-group search-input-group">
+                        <span class="input-group-text"><i class="bi bi-search"></i></span>
+                        <input type="text" class="form-control" id="planSearch" placeholder="Search plans..."/>
+                    </div>
+                    <select class="form-select filter-select" id="goalFilter">
+                        <option value="">All goals</option>
+                        <option>Strength</option>
+                        <option>Weight Loss</option>
+                        <option>Cardio</option>
+                        <option>Mobility</option>
+                        <option>Rehabilitation</option>
+                    </select>
+                </div>
+                <button class="btn btn-add-plan" onclick="showCreateForm()">
+                    <i class="bi bi-plus-lg me-2"></i>Create New Plan
+                </button>
+            </div>
+
+            <!-- Plans grid -->
+            <div class="row g-4" id="plansGrid">
+                {% for plan in plans %}
+                <div class="col-md-6 plan-col" data-goal="{{ plan.goal }}">
+                    <div class="plan-card">
+                        <div class="plan-card-header">
+                            <div class="plan-card-name">{{ plan.plan_name }}</div>
+                            <div class="plan-card-meta mt-1">
+                                {{ plan.duration_weeks }} weeks · {{ plan.days_per_week }} days/week · {{ plan.exercises.count }} exercise{{ plan.exercises.count|pluralize }}
+                            </div>
+                        </div>
+                        <div class="d-flex gap-2 mt-2 mb-3">
+                            <span class="goal-pill">{{ plan.goal }}</span>
+                            <span class="plan-level-pill">{{ plan.difficulty_level }}</span>
+                        </div>
+                        <p class="plan-card-desc">{{ plan.short_description }}</p>
+                        <div class="plan-card-footer d-flex align-items-center justify-content-between">
+                            <button class="btn btn-link text-danger p-0 small"
+                                    onclick="confirmDelete({{ plan.id }}, '{{ plan.plan_name|escapejs }}')">
+                                <i class="bi bi-trash3 me-1"></i>Delete
+                            </button>
+                            <div class="d-flex gap-2">
+                                <button class="btn btn-outline-secondary btn-sm rounded-3"
+                                        onclick="viewPlan({{ plan.id }})">
+                                    <i class="bi bi-eye me-1"></i>View
+                                </button>
+                                <button class="btn btn-outline-primary btn-sm rounded-3"
+                                        onclick="editPlan({{ plan.id }})">
+                                    <i class="bi bi-pencil me-1"></i>Edit
+                                </button>
+                                <button class="btn btn-assign-sm"
+                                        onclick="openAssignPanel({{ plan.id }}, '{{ plan.plan_name|escapejs }}')">
+                                    Assign
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="col-12 text-center py-5 text-secondary">
+                    <i class="bi bi-clipboard2 fs-1 d-block mb-3 opacity-25"></i>
+                    <p class="mb-0">No training plans yet. Create your first one!</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        <!-- end plans view -->
+
+        <!-- ── CREATE / EDIT / VIEW PLAN FORM ── -->
+        <div id="createFormView" class="d-none">
+            <div class="d-flex align-items-center gap-2 mb-4">
+                <button class="btn btn-back" onclick="showPlansView()">
+                    <i class="bi bi-arrow-left me-1"></i> Back to Plans
+                </button>
+            </div>
+
+            <!-- View-only banner -->
+            <div id="viewModeBanner" class="alert alert-info d-none py-2 mb-3 small">
+                <i class="bi bi-eye me-1"></i> View only — no changes can be made.
+            </div>
+
+            <div class="create-form-card">
+                <h5 class="fw-bold text-dark mb-1" id="formTitle">Create New Training Plan</h5>
+                <p class="text-secondary mb-4 small">Fill in the plan details and add exercises below.</p>
+
+                <!-- ── AI GENERATOR SECTION ── -->
+                <div id="aiSection" class="border rounded-3 p-3 mb-4" style="background:#fdf8ff; border-color:#dee2e6 !important;">
+                    <div class="d-flex align-items-center gap-2 mb-2">
+                        <i class="bi bi-stars text-danger fs-5"></i>
+                        <span class="fw-semibold text-dark">Generate with AI</span>
+                        <span class="badge bg-danger bg-opacity-10 text-danger fw-normal small ms-1">Beta</span>
+                    </div>
+                    <p class="text-secondary small mb-3">
+                        Fill in the plan details above, then optionally describe the client's specific needs below.
+                        AI will generate a full exercise list for you to review and edit before saving.
+                    </p>
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold small mb-1">
+                            Additional context <span class="text-secondary fw-normal">(optional)</span>
+                        </label>
+                        <input type="text" class="form-control form-control-sm" id="aiExtraContext"
+                               placeholder="e.g. client has a knee injury, prefers gym equipment, wants to lose 5kg"/>
+                    </div>
+                    <button class="btn btn-sm btn-danger rounded-3" id="btnGenerate" onclick="generateWithAI()">
+                        <i class="bi bi-stars me-1"></i>Generate Exercises
+                    </button>
+                    <!-- AI status message -->
+                    <div id="aiStatus" class="mt-2 small d-none"></div>
+                </div>
+                <!-- end AI section -->
+
+                <div class="form-section-label mb-3 pb-2">
+                    <i class="bi bi-info-circle me-1"></i> Plan Details
+                </div>
+                <div class="row g-3 mb-4">
+                    <div class="col-12">
+                        <label class="form-label mb-1 fw-semibold small">Plan name</label>
+                        <input type="text" class="form-control plan-input" id="planName" placeholder="e.g. 8-Week Strength Builder"/>
+                    </div>
+                    <div class="col-sm-4">
+                        <label class="form-label mb-1 fw-semibold small">Goal</label>
+                        <select class="form-select plan-input" id="planGoal">
+                            <option value="" disabled selected>Select goal</option>
+                            <option value="strength">Strength</option>
+                            <option value="weight_loss">Weight Loss</option>
+                            <option value="cardio">Cardio</option>
+                            <option value="mobility">Mobility</option>
+                            <option value="rehabilitation">Rehabilitation</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-4">
+                        <label class="form-label mb-1 fw-semibold small">Duration (weeks)</label>
+                        <input type="number" class="form-control plan-input" id="planDuration" placeholder="e.g. 8" min="1" max="52"/>
+                    </div>
+                    <div class="col-sm-4">
+                        <label class="form-label mb-1 fw-semibold small">Days per week</label>
+                        <select class="form-select plan-input" id="planDays">
+                            <option value="" disabled selected>Select</option>
+                            <option>2</option><option>3</option><option>4</option><option>5</option><option>6</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="form-label mb-1 fw-semibold small">Difficulty level</label>
+                        <select class="form-select plan-input" id="planLevel">
+                            <option value="" disabled selected>Select level</option>
+                            <option value="beginner">Beginner</option>
+                            <option value="intermediate">Intermediate</option>
+                            <option value="advanced">Advanced</option>
+                            <option value="all_levels">All Levels</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="form-label mb-1 fw-semibold small">Short description</label>
+                        <input type="text" class="form-control plan-input" id="planDesc" placeholder="Brief summary of the plan"/>
+                    </div>
+                </div>
+
+                <div class="form-section-label mb-3 pb-2">
+                    <i class="bi bi-list-check me-1"></i> Exercises
+                </div>
+                <div id="exerciseList" class="d-flex flex-column gap-3 mb-3"></div>
+                <button class="btn btn-add-exercise mb-4" id="btnAddExercise" onclick="addExerciseRow()">
+                    <i class="bi bi-plus-circle me-2"></i>Add Exercise
+                </button>
+
+                <div class="d-flex gap-2 flex-wrap">
+                    <button class="btn btn-save-plan" id="btnSavePlan" onclick="submitPlan()">
+                        <i class="bi bi-floppy me-2"></i>Save Plan
+                    </button>
+                    <button class="btn btn-cancel-plan" id="btnCancelPlan" onclick="showPlansView()">Cancel</button>
+                </div>
+            </div>
+        </div>
+        <!-- end create/edit/view form -->
+
+    </main>
+</div>
+
+<div class="sidebar-overlay d-lg-none" id="sidebarOverlay"></div>
+
+<!-- ── ASSIGN SIDE PANEL ── -->
+<div class="panel-overlay" id="panelOverlay" onclick="closeAssignPanel()"></div>
+<aside class="side-panel" id="assignPanel">
+    <div class="panel-header d-flex align-items-center justify-content-between px-4 py-3 border-bottom">
+        <div>
+            <h6 class="mb-0 fw-semibold text-dark">Assign to Client</h6>
+            <small class="text-secondary" id="assignPanelPlanName"></small>
+        </div>
+        <button class="btn panel-close-btn" onclick="closeAssignPanel()">
+            <i class="bi bi-x-lg"></i>
+        </button>
+    </div>
+    <div class="panel-body px-4 py-4">
+        <p class="text-secondary small mb-3">
+            Assigning this plan will archive the client's currently active plan (if any) and start this one from today.
+        </p>
+        <form id="assignForm" method="POST" action="">
+            {% csrf_token %}
+            <div class="mb-4">
+                <label class="form-label fw-semibold small">Select Client</label>
+                <select class="form-select" name="client_id" id="assignClientSelect" required>
+                    <option value="">Choose a client…</option>
+                    {% for client in clients %}
+                    <option value="{{ client.id }}">{{ client.first_name }} {{ client.last_name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-danger flex-grow-1 rounded-3">
+                    <i class="bi bi-check-lg me-1"></i>Assign Plan
+                </button>
+                <button type="button" class="btn btn-outline-secondary rounded-3" onclick="closeAssignPanel()">Cancel</button>
+            </div>
+        </form>
+    </div>
+</aside>
+
+<!-- ── DELETE CONFIRM MODAL ── -->
+<div class="modal fade" id="deleteModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-content rounded-4 border-0 shadow">
+            <div class="modal-body px-4 py-4 text-center">
+                <i class="bi bi-trash3-fill text-danger fs-2 mb-3 d-block"></i>
+                <h6 class="fw-semibold mb-1">Delete Plan?</h6>
+                <p class="text-secondary small mb-4" id="deleteModalText"></p>
+                <div class="d-flex gap-2">
+                    <button class="btn btn-outline-secondary flex-grow-1 rounded-3" data-bs-dismiss="modal">Cancel</button>
+                    <form id="deleteForm" method="POST" class="flex-grow-1">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger w-100 rounded-3">Delete</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ── HIDDEN PLAN FORM (create / edit POST) ── -->
+<form id="planForm" method="POST" action="" class="d-none">
+    {% csrf_token %}
+    <input type="hidden" name="plan_name"         id="f_plan_name">
+    <input type="hidden" name="goal"              id="f_goal">
+    <input type="hidden" name="duration_weeks"    id="f_duration_weeks">
+    <input type="hidden" name="days_per_week"     id="f_days_per_week">
+    <input type="hidden" name="difficulty_level"  id="f_difficulty_level">
+    <input type="hidden" name="short_description" id="f_short_description">
+    <div id="f_exercises"></div>
+</form>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+const PLANS_URL_BASE   = "{% url 'training_plans' %}";
+const GENERATE_AI_URL  = "{% url 'generate_plan_ai' %}";
+const CSRF_TOKEN       = "{{ csrf_token }}";
+
+// ── Sidebar ───────────────────────────────────────────────────────────────────
+const sidebar        = document.getElementById('sidebar');
+const sidebarOverlay = document.getElementById('sidebarOverlay');
+document.getElementById('sidebarToggle')?.addEventListener('click', () => {
+    sidebar.classList.toggle('sidebar-open');
+    sidebarOverlay.classList.toggle('active');
+});
+sidebarOverlay?.addEventListener('click', () => {
+    sidebar.classList.remove('sidebar-open');
+    sidebarOverlay.classList.remove('active');
+});
+
+// ── Search & filter ───────────────────────────────────────────────────────────
+document.getElementById('planSearch').addEventListener('input', filterPlans);
+document.getElementById('goalFilter').addEventListener('change', filterPlans);
+
+function filterPlans() {
+    const q    = document.getElementById('planSearch').value.toLowerCase();
+    const goal = document.getElementById('goalFilter').value;
+    document.querySelectorAll('.plan-col').forEach(col => {
+        const name  = col.querySelector('.plan-card-name').textContent.toLowerCase();
+        const cGoal = col.dataset.goal;
+        col.style.display = ((!q || name.includes(q)) && (!goal || cGoal === goal)) ? '' : 'none';
+    });
+}
+
+// ── Read-only toggle ──────────────────────────────────────────────────────────
+function setFormReadOnly(isReadOnly) {
+    document.getElementById('viewModeBanner').classList.toggle('d-none', !isReadOnly);
+    document.querySelectorAll('#createFormView input, #createFormView select')
+        .forEach(el => el.disabled = isReadOnly);
+    document.getElementById('btnSavePlan').classList.toggle('d-none', isReadOnly);
+    document.getElementById('btnAddExercise').classList.toggle('d-none', isReadOnly);
+    document.getElementById('aiSection').classList.toggle('d-none', isReadOnly);
+    document.getElementById('btnCancelPlan').textContent = isReadOnly ? 'Close' : 'Cancel';
+    document.querySelectorAll('.btn-remove-exercise')
+        .forEach(btn => btn.classList.toggle('d-none', isReadOnly));
+}
+
+// ── View switching ────────────────────────────────────────────────────────────
+function showCreateForm() {
+    document.getElementById('plansView').classList.add('d-none');
+    document.getElementById('createFormView').classList.remove('d-none');
+    document.getElementById('formTitle').textContent = 'Create New Training Plan';
+    document.getElementById('planForm').action = "{% url 'create_plan' %}";
+    setFormReadOnly(false);
+    clearForm();
+    addExerciseRow();
+}
+
+function showPlansView() {
+    document.getElementById('plansView').classList.remove('d-none');
+    document.getElementById('createFormView').classList.add('d-none');
+}
+
+// ── Exercise rows ─────────────────────────────────────────────────────────────
+let exCount = 0;
+
+function addExerciseRow(data = {}) {
+    exCount++;
+    const id  = `ex-${exCount}`;
+    const div = document.createElement('div');
+    div.className = 'exercise-row';
+    div.id = id;
+    div.innerHTML = `
+        <div class="exercise-row-header d-flex align-items-center justify-content-between mb-2">
+            <span class="exercise-number">Exercise ${document.querySelectorAll('.exercise-row').length + 1}</span>
+            <button class="btn btn-remove-exercise" onclick="removeExercise('${id}')">
+                <i class="bi bi-trash3"></i>
+            </button>
+        </div>
+        <div class="row g-2">
+            <div class="col-12 col-md-4">
+                <input type="text" class="form-control plan-input" placeholder="Exercise name"
+                       name="exercise_name" value="${data.exercise_name || ''}"/>
+            </div>
+            <div class="col-6 col-md-2">
+                <input type="number" class="form-control plan-input" placeholder="Sets"
+                       min="1" name="sets" value="${data.sets || ''}"/>
+            </div>
+            <div class="col-6 col-md-2">
+                <input type="text" class="form-control plan-input" placeholder="Reps / Duration"
+                       name="reps_duration" value="${data.reps_duration || ''}"/>
+            </div>
+            <div class="col-6 col-md-2">
+                <input type="text" class="form-control plan-input" placeholder="Rest (e.g. 60s)"
+                       name="rest_seconds" value="${data.rest_seconds || ''}"/>
+            </div>
+            <div class="col-6 col-md-2">
+                <input type="text" class="form-control plan-input" placeholder="Weight (optional)"
+                       name="weight" value="${data.weight || ''}"/>
+            </div>
+            <div class="col-12">
+                <input type="text" class="form-control plan-input" placeholder="Notes (e.g. keep core tight)"
+                       name="notes" value="${data.notes || ''}"/>
+            </div>
+        </div>`;
+    document.getElementById('exerciseList').appendChild(div);
+    renumberExercises();
+}
+
+function removeExercise(id) {
+    document.getElementById(id)?.remove();
+    renumberExercises();
+}
+
+function renumberExercises() {
+    document.querySelectorAll('.exercise-row').forEach((row, i) => {
+        const label = row.querySelector('.exercise-number');
+        if (label) label.textContent = `Exercise ${i + 1}`;
+    });
+}
+
+function clearForm() {
+    ['planName','planGoal','planDuration','planDays','planLevel','planDesc']
+        .forEach(id => { document.getElementById(id).value = ''; });
+    document.getElementById('exerciseList').innerHTML = '';
+    document.getElementById('aiExtraContext').value = '';
+    document.getElementById('aiStatus').classList.add('d-none');
+    exCount = 0;
+}
+
+// ── AI Generator ──────────────────────────────────────────────────────────────
+function generateWithAI() {
+    const goal     = document.getElementById('planGoal').value;
+    const level    = document.getElementById('planLevel').value;
+    const duration = document.getElementById('planDuration').value;
+    const days     = document.getElementById('planDays').value;
+    const extra    = document.getElementById('aiExtraContext').value;
+
+    if (!goal || !level || !duration || !days) {
+        showAiStatus('warning', '<i class="bi bi-exclamation-triangle me-1"></i>Please fill in Goal, Duration, Days per week and Difficulty level first.');
+        return;
+    }
+
+    const btn = document.getElementById('btnGenerate');
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span>Generating…';
+    showAiStatus('info', '<i class="bi bi-stars me-1"></i>AI is building your exercise plan…');
+
+    fetch(GENERATE_AI_URL, {
+        method : 'POST',
+        headers: {
+            'Content-Type' : 'application/json',
+            'X-CSRFToken'  : CSRF_TOKEN,
+        },
+        body: JSON.stringify({
+            goal          : goal,
+            difficulty    : level,
+            duration_weeks: duration,
+            days_per_week : days,
+            extra_context : extra,
+        }),
+    })
+    .then(r => r.json())
+    .then(data => {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="bi bi-stars me-1"></i>Generate Exercises';
+
+        if (!data.success) {
+            showAiStatus('danger', `<i class="bi bi-x-circle me-1"></i>${data.error}`);
+            return;
+        }
+
+        const plan = data.plan;
+
+        // Auto-fill plan name and description if fields are empty
+        if (!document.getElementById('planName').value.trim() && plan.plan_name) {
+            document.getElementById('planName').value = plan.plan_name;
+        }
+        if (!document.getElementById('planDesc').value.trim() && plan.short_description) {
+            document.getElementById('planDesc').value = plan.short_description;
+        }
+
+        // Replace exercise list with AI-generated ones
+        document.getElementById('exerciseList').innerHTML = '';
+        exCount = 0;
+        plan.exercises.forEach(ex => addExerciseRow(ex));
+
+        showAiStatus('success',
+            `<i class="bi bi-check-circle me-1"></i>Generated ${plan.exercises.length} exercises — review and edit as needed before saving.`
+        );
+    })
+    .catch(err => {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="bi bi-stars me-1"></i>Generate Exercises';
+        showAiStatus('danger', `<i class="bi bi-x-circle me-1"></i>Network error: ${err.message}`);
+    });
+}
+
+function showAiStatus(type, html) {
+    const el = document.getElementById('aiStatus');
+    el.className = `mt-2 small alert alert-${type} py-2 mb-0`;
+    el.innerHTML = html;
+    el.classList.remove('d-none');
+}
+
+// ── Submit plan ───────────────────────────────────────────────────────────────
+function submitPlan() {
+    if (!document.getElementById('planName').value.trim()) {
+        alert('Please enter a plan name.');
+        return;
+    }
+
+    document.getElementById('f_plan_name').value         = document.getElementById('planName').value;
+    document.getElementById('f_goal').value              = document.getElementById('planGoal').value;
+    document.getElementById('f_duration_weeks').value    = document.getElementById('planDuration').value;
+    document.getElementById('f_days_per_week').value     = document.getElementById('planDays').value;
+    document.getElementById('f_difficulty_level').value  = document.getElementById('planLevel').value;
+    document.getElementById('f_short_description').value = document.getElementById('planDesc').value;
+
+    const fEx = document.getElementById('f_exercises');
+    fEx.innerHTML = '';
+    ['exercise_name','sets','reps_duration','rest_seconds','weight','notes'].forEach(fname => {
+        document.querySelectorAll(`#exerciseList [name="${fname}"]`).forEach(input => {
+            const h = document.createElement('input');
+            h.type = 'hidden'; h.name = fname; h.value = input.value;
+            fEx.appendChild(h);
+        });
+    });
+
+    document.getElementById('planForm').submit();
+}
+
+// ── View plan (read-only) ─────────────────────────────────────────────────────
+function viewPlan(planId) {
+    fetch(`${PLANS_URL_BASE}${planId}/view/`)
+        .then(r => r.json())
+        .then(data => {
+            document.getElementById('formTitle').textContent = 'View Training Plan';
+            document.getElementById('planName').value     = data.plan_name;
+            document.getElementById('planGoal').value     = data.goal;
+            document.getElementById('planDuration').value = data.duration_weeks;
+            document.getElementById('planDays').value     = data.days_per_week;
+            document.getElementById('planLevel').value    = data.difficulty_level;
+            document.getElementById('planDesc').value     = data.short_description;
+            document.getElementById('exerciseList').innerHTML = '';
+            exCount = 0;
+            data.exercises.forEach(ex => addExerciseRow(ex));
+            if (data.exercises.length === 0) addExerciseRow();
+            setFormReadOnly(true);
+            document.getElementById('plansView').classList.add('d-none');
+            document.getElementById('createFormView').classList.remove('d-none');
+        });
+}
+
+// ── Edit plan ─────────────────────────────────────────────────────────────────
+function editPlan(planId) {
+    fetch(`${PLANS_URL_BASE}${planId}/edit/`)
+        .then(r => r.json())
+        .then(data => {
+            document.getElementById('formTitle').textContent = 'Edit Training Plan';
+            document.getElementById('planForm').action = `${PLANS_URL_BASE}${planId}/edit/`;
+            document.getElementById('planName').value     = data.plan_name;
+            document.getElementById('planGoal').value     = data.goal;
+            document.getElementById('planDuration').value = data.duration_weeks;
+            document.getElementById('planDays').value     = data.days_per_week;
+            document.getElementById('planLevel').value    = data.difficulty_level;
+            document.getElementById('planDesc').value     = data.short_description;
+            document.getElementById('exerciseList').innerHTML = '';
+            exCount = 0;
+            data.exercises.forEach(ex => addExerciseRow(ex));
+            if (data.exercises.length === 0) addExerciseRow();
+            setFormReadOnly(false);
+            document.getElementById('plansView').classList.add('d-none');
+            document.getElementById('createFormView').classList.remove('d-none');
+        });
+}
+
+// ── Delete plan ───────────────────────────────────────────────────────────────
+function confirmDelete(planId, planName) {
+    document.getElementById('deleteModalText').textContent =
+        `"${planName}" and all its exercises will be permanently deleted.`;
+    document.getElementById('deleteForm').action = `${PLANS_URL_BASE}${planId}/delete/`;
+    new bootstrap.Modal(document.getElementById('deleteModal')).show();
+}
+
+// ── Assign panel ──────────────────────────────────────────────────────────────
+function openAssignPanel(planId, planName) {
+    document.getElementById('assignPanelPlanName').textContent = planName;
+    document.getElementById('assignForm').action = `${PLANS_URL_BASE}${planId}/assign/`;
+    document.getElementById('assignClientSelect').value = '';
+    document.getElementById('assignPanel').classList.add('panel-open');
+    document.getElementById('panelOverlay').classList.add('active');
+}
+
+function closeAssignPanel() {
+    document.getElementById('assignPanel').classList.remove('panel-open');
+    document.getElementById('panelOverlay').classList.remove('active');
+}
+</script>
+
+</body>
+</html>

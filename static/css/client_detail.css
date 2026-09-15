@@ -1,0 +1,3 @@
+.exercise-body { display: none; }
+.exercise-body.show { display: block; }
+.cursor-pointer { cursor: pointer; }

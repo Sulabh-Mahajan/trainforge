@@ -1,0 +1,602 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Bootstrap ScratchPad</title>
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+            crossorigin="anonymous"
+        />
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+        />
+        <link rel="stylesheet" href="{% static 'css/base.css' %}">
+        <link rel="stylesheet" href="{% static 'css/home_page.css' %}">
+    </head> 
+
+    <body>
+        <nav class="navbar fixed-top shadow-sm navbar-expand-lg navbar-dark py-3">
+            <div class="container-fluid px-4 px-md-5">
+                <a class="navbar-brand" href="{% url 'home' %}">
+                <svg height="30" viewBox="40 25 420 110" role="img" aria-label="TrainForge">
+                    <style>.wm-dash { font-family: sans-serif; font-size: 52px; font-weight: 600; fill: #ffffff; letter-spacing: -1px; }</style>
+                    <rect x="40" y="30" width="80" height="80" rx="14" fill="white" fill-opacity="0.2"/>
+                    <rect x="57" y="80" width="12" height="26" rx="2" fill="white" opacity="0.55"/>
+                    <rect x="74" y="62" width="12" height="44" rx="2" fill="white" opacity="0.78"/>
+                    <rect x="91" y="47" width="12" height="59" rx="2" fill="white"/>
+                    <text x="142" y="97" class="wm-dash">Train<tspan fill="rgba(255,255,255,0.7)">Forge</tspan></text>
+                    <line x1="133" y1="38" x2="133" y2="118" stroke="rgba(255,255,255,0.3)" stroke-width="1"/>
+                </svg>
+                </a>
+
+                <button
+                    class="navbar-toggler border-0"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent"
+                    aria-controls="navbarSupportedContent"
+                    aria-expanded="false"
+                    aria-label="Toggle navigation"
+                >
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav mx-auto mb-2 mb-lg-0 gap-2">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="#">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#features">Features</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#pricing">Pricing</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#about_us">About Us</a>
+                        </li>
+                    </ul>
+
+                    <a href="{% url 'login' %}" class="btn btn-outline-light px-4 me-2">Login</a>
+                    <a href="{% url 'register' %}" class="btn btn-outline-light px-4">Get started</a>
+                </div>
+            </div>
+        </nav>
+
+        <section class="py-5 hero-section">
+            <div class="container px-4 px-md-5">
+                <div class="row align-items-center min-vh-50 g-5">
+
+                    <!-- LEFT -->
+                    <div class="col-md-6 d-flex flex-column gap-3">
+                        <div>
+                            <span class="badge rounded-pill hero-badge fw-normal px-3 py-2">
+                                <i class="bi bi-lightning-charge-fill me-1" aria-hidden="true"></i>
+                                For personal trainers
+                            </span>
+                        </div>
+
+                        <h1 class="hero-headline display-5 fw-semibold lh-sm mb-0">
+                            Train Smart.<br />Track <span class="text-accent">Better.</span>
+                        </h1>
+
+                        <p class="text-secondary fs-5 mb-0" style="max-width: 420px">
+                            Empowering personal trainers to manage clients,
+                            build programs, and track progress — all in one place.
+                        </p>
+
+                        <div class="d-flex gap-2 flex-wrap">
+                            <a href="{% url 'register' %}" class="btn btn-danger btn-lg px-4">Get started free</a>
+                            <a href="#features" class="btn btn-outline-danger btn-lg px-4 d-inline-flex align-items-center gap-2">
+                                <i class="bi bi-play-circle" aria-hidden="true"></i>
+                                See how it works
+                            </a>
+                        </div>
+
+                        <div class="border-top pt-3 mt-2 d-flex flex-wrap gap-4">
+                            <div>
+                                <div class="fs-4 fw-bold lh-1 text-dark">2.4k+</div>
+                                <div class="text-secondary text-xs">Active Trainers</div>
+                            </div>
+                            <div>
+                                <div class="fs-4 fw-bold lh-1 text-dark">18k+</div>
+                                <div class="text-secondary text-xs">Clients Managed</div>
+                            </div>
+                            <div>
+                                <div class="fs-4 fw-bold lh-1 text-dark">98%</div>
+                                <div class="text-secondary text-xs">Satisfaction Rate</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="position-relative">
+
+                            <!-- NEW: floating card top-right (decorative, screen-reader hidden) -->
+                            <div class="float-card-top bg-white border rounded-3 shadow-sm px-3 py-2 d-none d-md-flex align-items-center gap-2" aria-hidden="true">
+                                <span class="badge rounded-2 p-2 float-icon-red">
+                                    <i class="bi bi-person-check-fill"></i>
+                                </span>
+                                <span class="text-dark">3 new clients this week</span>
+                            </div>
+
+                            <!-- CHANGED: added hero-carousel-frame class for border/shadow -->
+                            <div
+                                id="imageCarousel"
+                                class="carousel slide hero-carousel-frame rounded-3 overflow-hidden shadow-sm"
+                                data-bs-ride="carousel"
+                                data-bs-interval="2000"
+                            >
+                                <div class="carousel-inner">
+                                    <div class="carousel-item active">
+                                        <!-- CHANGED: improved alt text -->
+                                        <img
+                                            src="{% static 'assets/sport-lifestyle-fitness-male-training.jpg' %}"
+                                            class="d-block w-100 object-fit-cover"
+                                            style="aspect-ratio: 4/3"
+                                            alt="Personal trainer guiding a client through a workout session"
+                                        />
+                                    </div>
+                                    <div class="carousel-item">
+                                        <img
+                                            src="{% static 'assets/young-fitness-man-studio.jpg' %}"
+                                            class="d-block w-100 object-fit-cover"
+                                            style="aspect-ratio: 4/3"
+                                            alt="Fitness professional in a training studio"
+                                        />
+                                    </div>
+
+                                    <div class="carousel-item">
+                                        <img
+                                            src="{% static 'assets/young-happy-sportswoman-getting-ready-workout-tying-shoelace-fitness-center.jpg' %}"
+                                            class="d-block w-100 object-fit-cover"
+                                            style="aspect-ratio: 4/3"
+                                            alt="Client preparing for a workout at a fitness centre"
+                                        />
+                                    </div>
+                                </div>
+
+                                <div class="carousel-indicators position-relative mt-2">
+                                    <button type="button" data-bs-target="#imageCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                                    <button type="button" data-bs-target="#imageCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                                    <button type="button" data-bs-target="#imageCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                                </div>
+                            </div>
+
+                            <div class="float-card-bottom bg-white border rounded-3 shadow-sm px-3 py-2 d-none d-md-flex align-items-center gap-2" aria-hidden="true">
+                                <span class="badge rounded-2 p-2 float-icon-green">
+                                    <i class="bi bi-graph-up-arrow"></i>
+                                </span>
+                                <span class="text-dark">Progress +24% this week</span>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+
+        <section class="py-5" id="features">
+            <div class="container px-4 px-md-5">
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <h2 class="fw-semibold">
+                            Everything you need to train smarter
+                        </h2>
+                        <p class="text-secondary">
+                            Built specifically for personal trainers who want to
+                            spend less time on admin and more time coaching.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="row g-4">
+                    <div class="col-md-4">
+                        <div class="card-action rounded-3 h-100 overflow-hidden border border-light-subtle shadow-sm">
+                            <img
+                                src="{% static 'assets/appointment_scheduling.png' %}"
+                                class="w-100 object-fit-cover"
+                                style="aspect-ratio: 16/9"
+                                alt="Appointment Scheduling"
+                            />
+                            <div class="p-4">
+                                <h5 class="fw-semibold mb-2">Appointment scheduling</h5>
+                                <p class="text-secondary small mb-0">
+                                    Keep all your client profiles, goals, and
+                                    history in one organised place. Never lose
+                                    track of a client's progress again.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="card-action rounded-3 h-100 overflow-hidden border border-light-subtle shadow-sm">
+                            <img
+                                src="{% static 'assets/progress_tracking.jpg' %}"
+                                class="w-100 object-fit-cover"
+                                style="aspect-ratio: 16/9"
+                                alt="Progress Tracking"
+                            />
+                            <div class="p-4">
+                                <h5 class="fw-semibold mb-2">Progress tracking</h5>
+                                <p class="text-secondary small mb-0">
+                                    Log workouts, measurements, and milestones.
+                                    Visualise your clients' progress with clear,
+                                    easy-to-read charts.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="card-action rounded-3 h-100 overflow-hidden border border-light-subtle shadow-sm">
+                            <img
+                                src="{% static 'assets/training_plan.jpg' %}"
+                                class="w-100 object-fit-cover"
+                                style="aspect-ratio: 16/9"
+                                alt="Training Plans"
+                            />
+                            <div class="p-4">
+                                <h5 class="fw-semibold mb-2">Personalised training plans</h5>
+                                <p class="text-secondary small mb-0">
+                                    Design custom workout programs with a simple
+                                    drag-and-drop builder and share them
+                                    directly with your clients.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-5 bg-danger text-white" id="ai_planner">
+            <div class="container px-4 px-md-5">
+                <div class="row align-items-center g-4">
+                    <div class="col-md-6">
+                        <h2 class="fw-semibold mb-3">
+                            Let AI handle the heavy lifting for you
+                        </h2>
+                        <p class="opacity-90 mb-4">
+                            Create personalised exercise plans, track client
+                            progress, and set realistic fitness goals — all
+                            powered by AI so you can focus on coaching.
+                        </p>
+                        <div class="mb-4">
+                            <div class="d-flex align-items-center mb-2 gap-2">
+                                <i class="bi bi-check-circle-fill"></i>
+                                <span class="small">Generate customised workout plans</span>
+                            </div>
+                            <div class="d-flex align-items-center mb-2 gap-2">
+                                <i class="bi bi-check-circle-fill"></i>
+                                <span class="small">Auto-track client progress</span>
+                            </div>
+                            <div class="d-flex align-items-center gap-2">
+                                <i class="bi bi-check-circle-fill"></i>
+                                <span class="small">Set smart fitness goals</span>
+                            </div>
+                        </div>
+                        <a href="{% url 'register' %}" class="btn btn-light btn-lg px-4 rounded-pill fw-semibold">
+                            Try AI Planner
+                        </a>
+                    </div>  
+
+                    <div class="col-md-6 text-center">
+                        <div class="ai-box position-relative w-50 mx-auto">
+                            <div class="ai-card bg-white rounded-3 p-4 text-start shadow-sm text-dark">
+                                <p class="mb-1 small text-muted">Client: John</p>
+                                <h6 class="fw-semibold mb-2">Weekly Plan</h6>
+                                <ul class="small text-start mb-0">
+                                    <li>Day 1: Strength Training</li>
+                                    <li>Day 2: Cardio + Core</li>
+                                    <li>Day 3: Rest</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-5" id="pricing">
+            <div class="container px-4 px-md-5">
+                <div class="row mb-5">
+                    <div class="col-md-6">
+                        <!-- ADD: section label pill, same as other sections -->
+                        <span class="section-label">Pricing</span>
+                        <h2 class="fw-semibold text-dark">Simple, transparent pricing</h2>
+                        <p class="text-secondary">
+                            Start for free and scale as your client base grows.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="row g-4 justify-content-center">
+
+                    <!-- Starter -->
+                    <div class="col-md-4">
+                        <div class="card-action position-relative overflow-hidden bg-white rounded-3 h-100 border border-light-subtle shadow-sm p-4 d-flex flex-column gap-3">
+                            <div>
+                                <h5 class="fw-semibold mb-1">Starter</h5>
+                                <div class="d-flex align-items-baseline gap-1">
+                                    <span class="fs-2 fw-semibold">Free</span>
+                                </div>
+                                <p class="text-secondary small mb-0 mt-1">
+                                    Perfect for trainers just getting started.
+                                </p>
+                            </div>
+                            <hr class="my-0" />
+                            <ul class="list-unstyled d-flex flex-column gap-2 mb-0">
+                                <li class="d-flex align-items-center gap-2 small">
+                                    <i class="bi bi-check-circle-fill text-success" aria-hidden="true"></i>
+                                    Up to 3 clients
+                                </li>
+                                <li class="d-flex align-items-center gap-2 small">
+                                    <i class="bi bi-check-circle-fill text-success" aria-hidden="true"></i>
+                                    Basic progress tracking
+                                </li>
+                                <li class="d-flex align-items-center gap-2 small">
+                                    <i class="bi bi-check-circle-fill text-success" aria-hidden="true"></i>
+                                    Appointment scheduling
+                                </li>
+                                <li class="d-flex align-items-center gap-2 small">
+                                    <i class="bi bi-check-circle-fill text-success" aria-hidden="true"></i>
+                                    Email support
+                                </li>
+                            </ul>
+                            <a href="{% url 'register' %}" class="btn btn-outline-danger mt-auto">Get started free</a>
+                        </div>
+                    </div>
+
+                    <!-- Pro (featured) -->
+                    <div class="col-md-4">
+                        <div class="card-action rounded-3 h-100 border shadow-sm p-4 d-flex flex-column gap-3">
+                            <div>
+                                <span class="badge text-bg-primary fw-normal px-3 py-2 mb-2">Most popular</span>
+                                <h5 class="fw-semibold mb-1">Pro</h5>
+                                <div class="d-flex align-items-baseline gap-1">
+                                    <span class="fs-2 fw-semibold">$29</span>
+                                    <span class="text-secondary">/ mo</span>
+                                </div>
+                                <p class="text-secondary small mb-0 mt-1">
+                                    For growing trainers managing a full client roster.
+                                </p>
+                            </div>
+                            <hr class="my-0" />
+                            <ul class="list-unstyled d-flex flex-column gap-2 mb-0">
+                                <li class="d-flex align-items-center gap-2 small">
+                                    <i class="bi bi-check-circle-fill text-success" aria-hidden="true"></i>
+                                    Up to 30 clients
+                                </li>
+                                <li class="d-flex align-items-center gap-2 small">
+                                    <i class="bi bi-check-circle-fill text-success" aria-hidden="true"></i>
+                                    Advanced progress charts
+                                </li>
+                                <li class="d-flex align-items-center gap-2 small">
+                                    <i class="bi bi-check-circle-fill text-success" aria-hidden="true"></i>
+                                    Custom training plans
+                                </li>
+                                <li class="d-flex align-items-center gap-2 small">
+                                    <i class="bi bi-check-circle-fill text-success" aria-hidden="true"></i>
+                                    Client messaging
+                                </li>
+                                <li class="d-flex align-items-center gap-2 small">
+                                    <i class="bi bi-check-circle-fill text-success" aria-hidden="true"></i>
+                                    Priority support
+                                </li>
+                            </ul>
+                            <a href="{%url 'register' %}" class="btn btn-outline-danger mt-auto">Start free trial</a>
+                        </div>
+                    </div>
+
+                    <!-- Elite -->
+                    <div class="col-md-4">
+                        <div class=" card-action rounded-3 h-100 border border-light-subtle shadow-sm p-4 d-flex flex-column gap-3">
+                            <div>
+                                <h5 class="fw-semibold mb-1">Elite</h5>
+                                <div class="d-flex align-items-baseline gap-1">
+                                    <span class="fs-2 fw-semibold">$79</span>
+                                    <span class="text-secondary">/ mo</span>
+                                </div>
+                                <p class="text-secondary small mb-0 mt-1">
+                                    For studios and high-volume training businesses.
+                                </p>
+                            </div>
+                            <hr class="my-0" />
+                            <ul class="list-unstyled d-flex flex-column gap-2 mb-0">
+                                <li class="d-flex align-items-center gap-2 small">
+                                    <i class="bi bi-check-circle-fill text-success" aria-hidden="true"></i>
+                                    Unlimited clients
+                                </li>
+                                <li class="d-flex align-items-center gap-2 small">
+                                    <i class="bi bi-check-circle-fill text-success" aria-hidden="true"></i>
+                                    Multi-trainer support
+                                </li>
+                                <li class="d-flex align-items-center gap-2 small">
+                                    <i class="bi bi-check-circle-fill text-success" aria-hidden="true"></i>
+                                    White-label branding
+                                </li>
+                                <li class="d-flex align-items-center gap-2 small">
+                                    <i class="bi bi-check-circle-fill text-success" aria-hidden="true"></i>
+                                    API access
+                                </li>
+                                <li class="d-flex align-items-center gap-2 small">
+                                    <i class="bi bi-check-circle-fill text-success" aria-hidden="true"></i>
+                                    Dedicated account manager
+                                </li>
+                            </ul>
+                            <a href="{% url 'register' %}" class="btn btn-outline-danger mt-auto">Register Now</a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <section class="py-5 faq-section" id="faq">
+            <div class="container px-4 px-md-5">
+
+                <!-- Header -->
+                <div class="row mb-5">
+                    <div class="col-md-6">
+                        <span class="section-label">FAQ</span>
+                        <h2 class="fw-semibold text-dark mt-1">Frequently asked questions</h2>
+                        <p class="text-secondary">
+                            Everything you need to know about TrainForge.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="row justify-content-center">
+                    <div class="col-12">
+                        <div class="accordion d-flex flex-column gap-0" id="faqAccordion">
+
+                            <div class="accordion-item faq-item rounded-3 mb-3 overflow-hidden bg-white">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed fw-medium" type="button" data-bs-toggle="collapse" data-bs-target="#faq1" aria-expanded="false" aria-controls="faq1">
+                                        <i class="bi bi-gift me-3 text-danger opacity-75" aria-hidden="true"></i>
+                                        Is there a free trial available?
+                                    </button>
+                                </h2>
+                                <div id="faq1" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                                    <div class="accordion-body text-secondary">
+                                        Yes — the Pro plan comes with a 14-day free trial, no credit card required. You can explore all features and decide if TrainForge is right for you before committing.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="accordion-item faq-item rounded-3 mb-3 overflow-hidden bg-white">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed fw-medium" type="button" data-bs-toggle="collapse" data-bs-target="#faq2" aria-expanded="false" aria-controls="faq2">
+                                        <i class="bi bi-arrow-left-right me-3 text-danger opacity-75" aria-hidden="true"></i>
+                                        Can I switch plans later?
+                                    </button>
+                                </h2>
+                                <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                                    <div class="accordion-body text-secondary">
+                                        Absolutely. You can upgrade or downgrade your plan at any time from your account settings. Changes take effect at the start of your next billing cycle.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="accordion-item faq-item rounded-3 mb-3 overflow-hidden bg-white">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed fw-medium" type="button" data-bs-toggle="collapse" data-bs-target="#faq3" aria-expanded="false" aria-controls="faq3">
+                                        <i class="bi bi-phone me-3 text-danger opacity-75" aria-hidden="true"></i>
+                                        How do my clients access their training plans?
+                                    </button>
+                                </h2>
+                                <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                                    <div class="accordion-body text-secondary">
+                                        Clients receive an invitation link via email and can log in to their own portal to view workouts, track progress, and message you — no app download required.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="accordion-item faq-item rounded-3 mb-3 overflow-hidden bg-white">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed fw-medium" type="button" data-bs-toggle="collapse" data-bs-target="#faq4" aria-expanded="false" aria-controls="faq4">
+                                        <i class="bi bi-shield-lock me-3 text-danger opacity-75" aria-hidden="true"></i>
+                                        Is my data secure?
+                                    </button>
+                                </h2>
+                                <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                                    <div class="accordion-body text-secondary">
+                                        Yes. All data is encrypted in transit and at rest. We never share your or your clients' data with third parties, and we're fully GDPR compliant.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="accordion-item faq-item rounded-3 mb-3 overflow-hidden bg-white">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed fw-medium" type="button" data-bs-toggle="collapse" data-bs-target="#faq5" aria-expanded="false" aria-controls="faq5">
+                                        <i class="bi bi-x-circle me-3 text-danger opacity-75" aria-hidden="true"></i>
+                                        Can I cancel my subscription at any time?
+                                    </button>
+                                </h2>
+                                <div id="faq5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                                    <div class="accordion-body text-secondary">
+                                        Yes, you can cancel at any time with no penalties. You'll retain access until the end of your current billing period, and your data can be exported before cancellation.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="accordion-item faq-item rounded-3 mb-3 overflow-hidden bg-white">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed fw-medium" type="button" data-bs-toggle="collapse" data-bs-target="#faq6" aria-expanded="false" aria-controls="faq6">
+                                        <i class="bi bi-people me-3 text-danger opacity-75" aria-hidden="true"></i>
+                                        Do you offer discounts for multiple trainers?
+                                    </button>
+                                </h2>
+                                <div id="faq6" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                                    <div class="accordion-body text-secondary">
+                                        Yes — the Elite plan supports multiple trainers under one account. If you're running a larger studio or franchise, get in touch and we'll put together a custom quote.
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <!-- CTA strip below FAQ -->
+                        <div class="faq-contact rounded-4 mt-4 p-4 d-flex align-items-center justify-content-between flex-wrap gap-3">
+                            <div>
+                                <div class="fw-semibold text-white">Still have questions?</div>
+                                <div class="small text-white opacity-75">Our team is happy to help you get started.</div>
+                            </div>
+                            <a href="#" class="btn btn-light fw-semibold px-4">Contact us</a>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer class="text-white pt-5 pb-4 mt-auto" id="about_us">
+            <div class="container px-4 px-md-5">
+                <div class="row gy-5 pb-4 border-bottom border-secondary">
+                    <div class="col-md-5 text-center text-md-start">
+                        <a class="navbar-brand fw-semibold fs-5 text-white mb-3 d-inline-block" href="#">TrainForge</a>
+                        <p class="text-secondary small mx-auto mx-md-0">
+                            Empowering personal trainers to manage clients,
+                            build programs, and track progress — all in one place.
+                        </p>
+                        <div class="d-flex gap-3 justify-content-center justify-content-md-start mt-4">
+                            <a href="#" class="text-secondary"><i class="bi bi-youtube fs-5"></i></a>
+                            <a href="#" class="text-secondary"><i class="bi bi-linkedin fs-5"></i></a>
+                            <a href="#" class="text-secondary"><i class="bi bi-twitter-x fs-5"></i></a>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3 offset-md-4 text-center text-md-start">
+                        <h6 class="fw-semibold text-uppercase text-decoration-underline mb-3">Quick Links</h6>
+                        <ul class="list-unstyled d-flex flex-column gap-2 mb-0">
+                            <li><a href="#features" class="text-secondary text-decoration-none small">Features</a></li>
+                            <li><a href="#pricing" class="text-secondary text-decoration-none small">Pricing</a></li>
+                            <li><a href="#faq" class="text-secondary text-decoration-none small">FAQ</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="row pt-4">
+                    <div class="col text-center">
+                        <span class="text-secondary small">&copy; 2026 TrainForge — All rights reserved.</span>
+                    </div>
+                </div>
+            </div>
+        </footer>
+
+        <script
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+            crossorigin="anonymous"
+        ></script>
+    </body>
+</html>

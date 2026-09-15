@@ -1,0 +1,444 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>{{ client.first_name }} {{ client.last_name }} — TrainForge</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"/>
+    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}"/>
+    <style>
+        .exercise-body { display: none; }
+        .exercise-body.show { display: block; }
+        .cursor-pointer { cursor: pointer; }
+    </style>
+</head>
+<body>
+
+<!-- ── SIDEBAR ── -->
+<aside class="sidebar d-flex flex-column" id="sidebar">
+    <div class="sidebar-logo px-4 py-3 border-bottom border-sidebar">
+        <svg height="30" viewBox="40 25 420 110" role="img" aria-label="TrainForge">
+            <style>.wm-dash { font-family: sans-serif; font-size: 52px; font-weight: 600; fill: #ffffff; letter-spacing: -1px; }</style>
+            <rect x="40" y="30" width="80" height="80" rx="14" fill="white" fill-opacity="0.2"/>
+            <rect x="57" y="80" width="12" height="26" rx="2" fill="white" opacity="0.55"/>
+            <rect x="74" y="62" width="12" height="44" rx="2" fill="white" opacity="0.78"/>
+            <rect x="91" y="47" width="12" height="59" rx="2" fill="white"/>
+            <text x="142" y="97" class="wm-dash">Train<tspan fill="rgba(255,255,255,0.7)">Forge</tspan></text>
+            <line x1="133" y1="38" x2="133" y2="118" stroke="rgba(255,255,255,0.3)" stroke-width="1"/>
+        </svg>
+    </div>
+    <nav class="sidebar-nav flex-grow-1 px-3 py-3">
+        <div class="nav-section-label mb-2">Main</div>
+        <ul class="list-unstyled mb-4">
+            <li><a href="{% url 'dashboard' %}" class="sidebar-link"><i class="bi bi-grid-1x2-fill"></i><span>Dashboard</span></a></li>
+            <li><a href="{% url 'training_plans' %}" class="sidebar-link"><i class="bi bi-people-fill"></i><span>Training Plans</span></a></li>
+            <li><a href="{% url 'schedule' %}" class="sidebar-link"><i class="bi bi-calendar3"></i><span>Schedule</span></a></li>
+            <li><a href="{% url 'progress' %}" class="sidebar-link"><i class="bi bi-graph-up-arrow"></i><span>Progress</span></a></li>
+        </ul>
+        <div class="nav-section-label mb-2">Account</div>
+        <ul class="list-unstyled mb-0">
+            <li><a href="{% url 'login' %}" class="sidebar-link sidebar-link-danger"><i class="bi bi-box-arrow-left"></i><span>Log out</span></a></li>
+        </ul>
+    </nav>
+    <div class="sidebar-profile px-3 py-3 border-top border-sidebar d-flex align-items-center gap-2">
+        <div class="avatar-circle flex-shrink-0">{{ request.user.first_name|first }}{{ request.user.last_name|first }}</div>
+        <div class="overflow-hidden">
+            <div class="sidebar-profile-name">{{ request.user.first_name }} {{ request.user.last_name }}</div>
+            <div class="sidebar-profile-role">{{ request.user.trainer.subscription.plan_name }} Plan</div>
+        </div>
+    </div>
+</aside>
+
+<!-- ── MAIN WRAPPER ── -->
+<div class="main-wrapper">
+
+    <!-- TOP BAR -->
+    <header class="topbar d-flex align-items-center justify-content-between px-4 py-3 border-bottom">
+        <div class="d-flex align-items-center gap-3">
+            <button class="btn btn-sm sidebar-toggle d-lg-none" id="sidebarToggle">
+                <i class="bi bi-list fs-5"></i>
+            </button>
+            <div>
+                <h5 class="mb-0 fw-semibold text-dark">{{ client.first_name }} {{ client.last_name }}</h5>
+                <p class="mb-0 text-secondary" style="font-size:0.8rem">Client Profile</p>
+            </div>
+        </div>
+        <div class="avatar-circle avatar-sm">{{ request.user.first_name|first }}{{ request.user.last_name|first }}</div>
+    </header>
+
+    <!-- CONTENT -->
+    <main class="dashboard-content px-4 py-4">
+
+        <!-- Success toast -->
+        {% if request.GET.plan_assigned %}
+        <div id="assignToast" style="
+            position:fixed; top:50%; left:50%; transform:translate(-50%,-50%);
+            z-index:9999; background:#198754; color:white;
+            padding:20px 30px; border-radius:12px;
+            box-shadow:0 10px 40px rgba(0,0,0,0.2);
+            display:flex; align-items:center; gap:10px; font-weight:500;">
+            <i class="bi bi-check-circle-fill fs-5"></i> Plan assigned successfully!
+        </div>
+        <script>
+            setTimeout(() => {
+                const t = document.getElementById('assignToast');
+                if (t) t.style.display = 'none';
+            }, 3000);
+        </script>
+        {% endif %}
+
+        {% if request.GET.from == 'progress' %}
+        <a href="{% url 'progress' %}" class="text-secondary text-decoration-none small d-inline-flex align-items-center gap-1 mb-3">
+            <i class="bi bi-arrow-left"></i> Back to Progress
+        </a>
+        {% else %}
+        <a href="{% url 'dashboard' %}" class="text-secondary text-decoration-none small d-inline-flex align-items-center gap-1 mb-3">
+            <i class="bi bi-arrow-left"></i> Back to Dashboard
+        </a>
+        {% endif %}
+
+        <!-- ── CLIENT INFO ── -->
+        <div class="dash-card mb-3">
+            <div class="d-flex align-items-center gap-3 mb-4">
+                <div class="avatar-circle" style="width:52px;height:52px;font-size:1.2rem;">
+                    {{ client.first_name|first }}{{ client.last_name|first }}
+                </div>
+                <div>
+                    <div class="fw-semibold text-dark" style="font-size:1.1rem;">{{ client.first_name }} {{ client.last_name }}</div>
+                    <div class="text-secondary small">
+                        <i class="bi bi-envelope me-1"></i>{{ client.email }}
+                        {% if client.phone %}<span class="mx-1">·</span><i class="bi bi-phone me-1"></i>{{ client.phone }}{% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="d-flex align-items-center justify-content-between mb-3">
+                <h6 class="fw-semibold text-dark mb-0">Basic Information</h6>
+                <div class="d-flex gap-2">
+                    <button class="btn btn-sm btn-outline-secondary"
+                            data-bs-toggle="modal" data-bs-target="#editClientModal">
+                        <i class="bi bi-pencil me-1"></i>Edit
+                    </button>
+                    <form method="POST" action="{% url 'archive_client' client.id %}"
+                        onsubmit="return confirm('Archive {{ client.first_name }}? They will be removed from your client list.');">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-sm btn-outline-danger">
+                            <i class="bi bi-archive me-1"></i>Archive
+                        </button>
+                    </form>
+                </div>
+            </div>
+            <div class="row g-2 mb-3">
+                <div class="col-6 col-sm-4 col-lg-2">
+                    <div class="stat-card h-100 text-center p-3">
+                        <div class="stat-label">Age</div>
+                        <div class="stat-value" style="font-size:1.3rem;">{{ client.age }}</div>
+                        <div class="stat-label">years</div>
+                    </div>
+                </div>
+                <div class="col-6 col-sm-4 col-lg-2">
+                    <div class="stat-card h-100 text-center p-3">
+                        <div class="stat-label">Sex</div>
+                        <div class="stat-value" style="font-size:1.3rem;">{{ client.sex|capfirst }}</div>
+                    </div>
+                </div>
+                <div class="col-6 col-sm-4 col-lg-2">
+                    <div class="stat-card h-100 text-center p-3">
+                        <div class="stat-label">Height</div>
+                        <div class="stat-value" style="font-size:1.3rem;">{{ client.height }}</div>
+                        <div class="stat-label">cm</div>
+                    </div>
+                </div>
+                <div class="col-6 col-sm-4 col-lg-2">
+                    <div class="stat-card h-100 text-center p-3">
+                        <div class="stat-label">Weight</div>
+                        <div class="stat-value" style="font-size:1.3rem;">{{ client.weight }}</div>
+                        <div class="stat-label">kg</div>
+                    </div>
+                </div>
+                <div class="col-6 col-sm-4 col-lg-2">
+                    <div class="stat-card h-100 text-center p-3">
+                        <div class="stat-label">Added On</div>
+                        <div class="fw-semibold text-dark" style="font-size:0.85rem;">{{ client.created_at|date:"d M Y" }}</div>
+                    </div>
+                </div>
+            </div>
+
+            {% if client.initial_fitness_level %}
+            <div class="stat-label mb-1">Initial Fitness Level</div>
+            <div class="border-start border-danger border-3 ps-3 text-secondary small">{{ client.initial_fitness_level }}</div>
+            {% endif %}
+        </div>
+
+        <!-- ── TRAINING PLANS ── -->
+        <div class="dash-card">
+            <!-- Header: title left, assign dropdown right -->
+            <div class="d-flex align-items-center justify-content-between mb-3">
+                <h6 class="fw-semibold text-dark mb-0">
+                    <i class="bi bi-clipboard2-pulse-fill text-danger me-2"></i>Training Plans
+                </h6>
+
+                {% if plans %}
+                <form method="POST" action="{% url 'assign_plan_to_client' client.id %}">
+                    {% csrf_token %}
+                    <select class="form-select form-select-sm"
+                            name="plan_id"
+                            style="width:auto; min-width:180px;"
+                            onchange="this.form.submit()">
+                        <option value="">Assign a plan…</option>
+                        {% for plan in plans %}
+                        <option value="{{ plan.id }}">{{ plan.plan_name }}</option>
+                        {% endfor %}
+                    </select>
+                </form>
+                {% endif %}
+            </div>
+
+            {% if enriched %}
+                {% for item in enriched %}
+                {% with a=item.assignment p=item.assignment.training_plan %}
+
+                <div class="border rounded-3 mb-3 overflow-hidden">
+
+                    <!-- Plan header -->
+                    <div class="d-flex align-items-center justify-content-between px-3 py-3 bg-white cursor-pointer"
+                         onclick="togglePlan('plan-{{ a.id }}', 'plan-chev-{{ a.id }}')">
+                        <div>
+                            <div class="d-flex align-items-center gap-2 mb-1">
+                                <span class="fw-semibold text-dark">{{ p.plan_name }}</span>
+                                {% if a.is_active %}
+                                    <span class="session-badge badge-upcoming">Active</span>
+                                {% else %}
+                                    <span class="session-badge badge-done">Ended</span>
+                                {% endif %}
+                            </div>
+                            <div class="d-flex flex-wrap gap-3 text-secondary" style="font-size:0.78rem;">
+                                <span><i class="bi bi-bullseye me-1"></i>{{ p.get_goal_display }}</span>
+                                <span><i class="bi bi-clock me-1"></i>{{ p.duration_weeks }} weeks</span>
+                                <span><i class="bi bi-calendar3 me-1"></i>{{ p.days_per_week }}×/week</span>
+                                <span><i class="bi bi-bar-chart me-1"></i>{{ p.get_difficulty_level_display }}</span>
+                                <span><i class="bi bi-play-circle me-1"></i>{{ a.start_date|date:"d M Y" }}</span>
+                                {% if a.end_date %}<span><i class="bi bi-stop-circle me-1"></i>{{ a.end_date|date:"d M Y" }}</span>{% endif %}
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-center gap-2 ms-3 flex-shrink-0">
+                            {% if a.is_active %}
+                            <form method="POST" action="{% url 'end_plan' a.id %}"
+                                  onsubmit="return confirm('End this plan for {{ client.first_name }}?');"
+                                  onclick="event.stopPropagation()">
+                                {% csrf_token %}
+                                <input type="hidden" name="next" value="{% url 'client_detail' client.id %}">
+                                <button type="submit" class="btn btn-sm btn-outline-danger">
+                                    <i class="bi bi-stop-circle me-1"></i>End Plan
+                                </button>
+                            </form>
+                            {% endif %}
+                            <i class="bi bi-chevron-down text-secondary" id="plan-chev-{{ a.id }}" style="transition:transform .2s;"></i>
+                        </div>
+                    </div>
+
+                    <!-- Exercises -->
+                    <div id="plan-{{ a.id }}" style="display:none; background:#f8f9fb;">
+                        {% for ex_item in item.exercises %}
+                        {% with ex=ex_item.exercise logs=ex_item.progress_logs %}
+                        <div class="border-top">
+                            <div class="d-flex align-items-center gap-3 px-3 py-2 cursor-pointer"
+                                 onclick="toggleExercise('ex-{{ a.id }}-{{ ex.id }}', 'ex-chev-{{ a.id }}-{{ ex.id }}')">
+                                <div class="stat-icon-wrap icon-red flex-shrink-0" style="width:28px;height:28px;font-size:0.75rem;font-weight:700;">
+                                    {{ forloop.counter }}
+                                </div>
+                                <div class="flex-grow-1">
+                                    <div class="fw-semibold text-dark small">{{ ex.exercise_name }}</div>
+                                    <div class="text-secondary" style="font-size:0.75rem;">
+                                        {{ ex.sets }} sets · {{ ex.reps_duration }}
+                                        {% if ex.weight %} · {{ ex.weight }}{% endif %}
+                                        {% if ex.rest_seconds %} · {{ ex.rest_seconds }}s rest{% endif %}
+                                    </div>
+                                </div>
+                                <i class="bi bi-chevron-down text-secondary small" id="ex-chev-{{ a.id }}-{{ ex.id }}" style="transition:transform .2s;"></i>
+                            </div>
+
+                            <div id="ex-{{ a.id }}-{{ ex.id }}" class="exercise-body px-3 pb-3 pt-2">
+
+                                <div class="session-label mb-2">Progress Log</div>
+                                {% for log in logs %}
+                                <div class="session-item mb-2">
+                                    <div class="session-time">{{ log.progress_date|date:"d M Y" }}</div>
+                                    <div class="session-info">
+                                        {% if log.notes %}<div class="session-type">{{ log.notes }}</div>{% endif %}
+                                    </div>
+                                    <span class="session-badge badge-upcoming">{{ log.benchmark_value }}</span>
+                                </div>
+                                {% empty %}
+                                <div class="text-secondary fst-italic small mb-2">No progress logged yet.</div>
+                                {% endfor %}
+
+                                <div class="border rounded-2 p-3 mt-2" style="background:#fff; border-style:dashed !important;">
+                                    <div class="session-label mb-2">Log New Entry</div>
+                                    <form method="POST" action="{% url 'add_progress' ex.id client.id %}">
+                                        {% csrf_token %}
+                                        <div class="row g-2 align-items-end">
+                                            <div class="col-sm-3">
+                                                <label class="form-label small fw-semibold mb-1">Date</label>
+                                                <input type="date" class="form-control form-control-sm" name="progress_date" value="{% now 'Y-m-d' %}" required/>
+                                            </div>
+                                            <div class="col-sm-2">
+                                                <label class="form-label small fw-semibold mb-1">Benchmark</label>
+                                                <input type="number" class="form-control form-control-sm" name="benchmark_value" min="0" required/>
+                                            </div>
+                                            <div class="col-sm-5">
+                                                <label class="form-label small fw-semibold mb-1">Notes</label>
+                                                <input type="text" class="form-control form-control-sm" name="notes" placeholder="Optional comment..."/>
+                                            </div>
+                                            <div class="col-sm-2">
+                                                <button type="submit" class="btn btn-sm btn-danger w-100">
+                                                    <i class="bi bi-plus-lg me-1"></i>Log
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+
+                            </div>
+                        </div>
+                        {% endwith %}
+                        {% endfor %}
+                    </div>
+
+                </div>
+                {% endwith %}
+                {% endfor %}
+
+            {% else %}
+            <div class="text-center text-secondary py-4" style="font-size:0.85rem;">
+                <i class="bi bi-clipboard-x d-block mb-2" style="font-size:1.5rem;color:#ddd;"></i>
+                No training plans assigned yet.
+            </div>
+            {% endif %}
+
+        </div><!-- /dash-card -->
+
+        <!-- EDIT CLIENT MODAL -->
+        <div class="modal fade" id="editClientModal" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content rounded-4">
+
+                    <div class="modal-header px-4 pt-4 pb-3 border-0">
+                        <h5 class="modal-title fw-semibold">
+                            <i class="bi bi-pencil-fill text-danger me-2"></i>Edit Client Info
+                        </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+
+                    <form method="POST" action="{% url 'edit_client' client.id %}">
+                        {% csrf_token %}
+                        <div class="modal-body px-4 pb-2">
+
+                            <div class="row g-3">
+                                <div class="col-6">
+                                    <label class="form-label fw-medium small mb-1">First Name</label>
+                                    <input type="text" class="form-control form-control-sm"
+                                        name="first_name" value="{{ client.first_name }}" required />
+                                </div>
+                                <div class="col-6">
+                                    <label class="form-label fw-medium small mb-1">Last Name</label>
+                                    <input type="text" class="form-control form-control-sm"
+                                        name="last_name" value="{{ client.last_name }}" required />
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label fw-medium small mb-1">Email</label>
+                                    <input type="email" class="form-control form-control-sm"
+                                        name="email" value="{{ client.email }}" required />
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label fw-medium small mb-1">
+                                        Phone <span class="text-secondary fw-normal">(optional)</span>
+                                    </label>
+                                    <input type="text" class="form-control form-control-sm"
+                                        name="phone" value="{{ client.phone|default:'' }}" />
+                                </div>
+                                <div class="col-6">
+                                    <label class="form-label fw-medium small mb-1">Age</label>
+                                    <input type="number" class="form-control form-control-sm"
+                                        name="age" value="{{ client.age }}" min="1" max="120" />
+                                </div>
+                                <div class="col-6">
+                                    <label class="form-label fw-medium small mb-1">Sex</label>
+                                    <select class="form-select form-select-sm" name="sex">
+                                        <option value="male"   {% if client.sex == 'male'   %}selected{% endif %}>Male</option>
+                                        <option value="female" {% if client.sex == 'female' %}selected{% endif %}>Female</option>
+                                        <option value="other"  {% if client.sex == 'other'  %}selected{% endif %}>Other</option>
+                                    </select>
+                                </div>
+                                <div class="col-6">
+                                    <label class="form-label fw-medium small mb-1">Height (cm)</label>
+                                    <input type="number" class="form-control form-control-sm"
+                                        name="height" value="{{ client.height }}" min="0" step="0.01" />
+                                </div>
+                                <div class="col-6">
+                                    <label class="form-label fw-medium small mb-1">Weight (kg)</label>
+                                    <input type="number" class="form-control form-control-sm"
+                                        name="weight" value="{{ client.weight }}" min="0" step="0.01" />
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label fw-medium small mb-1">
+                                        Initial Fitness Level <span class="text-secondary fw-normal">(optional)</span>
+                                    </label>
+                                    <textarea class="form-control form-control-sm" name="initial_fitness_level"
+                                            rows="2">{{ client.initial_fitness_level|default:'' }}</textarea>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="modal-footer px-4 pb-4 pt-3 border-0 gap-2">
+                            <button type="button"
+                                    class="btn btn-outline-secondary flex-grow-1 rounded-3"
+                                    data-bs-dismiss="modal">Cancel</button>
+                            <button type="submit"
+                                    class="btn btn-danger flex-grow-1 rounded-3">
+                                <i class="bi bi-check-lg me-1"></i>Save Changes
+                            </button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+
+    </main>
+</div>
+
+<div class="sidebar-overlay d-lg-none" id="sidebarOverlay"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+<script src="{% static 'js/dashboard.js' %}"></script>
+<script>
+    // When a plan is selected from the dropdown, update form action and submit
+    function submitAssign(select) {
+        const url = select.value;
+        if (!url) return;
+        const form = document.getElementById('assignForm');
+        form.action = url;
+        form.submit();
+    }
+
+    function togglePlan(bodyId, chevId) {
+        const body = document.getElementById(bodyId);
+        const chev = document.getElementById(chevId);
+        const open = body.style.display === 'block';
+        body.style.display   = open ? 'none' : 'block';
+        chev.style.transform = open ? '' : 'rotate(180deg)';
+    }
+
+    function toggleExercise(bodyId, chevId) {
+        const body = document.getElementById(bodyId);
+        const chev = document.getElementById(chevId);
+        const open = body.classList.contains('show');
+        body.classList.toggle('show', !open);
+        chev.style.transform = open ? '' : 'rotate(180deg)';
+    }
+</script>
+</body>
+</html>

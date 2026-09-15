@@ -1,0 +1,242 @@
+body {
+    background-color: #fdf5f5;
+}
+
+.navbar {
+    background-color: #c8102e;
+}
+.navbar .nav-link,
+.navbar .navbar-brand {
+    color: #fff !important;
+}
+
+.step-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background-color: rgba(200, 16, 46, 0.08);
+    color: #96281b;
+    border: 1px solid rgba(200, 16, 46, 0.2);
+    border-radius: 100px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    padding: 5px 14px;
+    margin-bottom: 0.75rem;
+}
+
+.register-card {
+    background: #ffffff;
+    border-radius: 20px;
+    border: 1px solid #f0e0e0;
+    box-shadow: 0 4px 24px rgba(200, 16, 46, 0.06);
+    padding: 2.5rem;
+}
+
+.form-section-title {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    color: #c8102e;
+    border-bottom: 1px solid #f0e0e0;
+}
+
+.form-label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #374151;
+}
+
+.form-control,
+.form-select {
+    border: 1.5px solid #e5e7eb;
+    border-radius: 10px;
+    padding: 0.65rem 0.9rem;
+    font-size: 0.9rem;
+    background-color: #fafafa;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+.form-control:focus,
+.form-select:focus {
+    border-color: #c8102e;
+    box-shadow: 0 0 0 3px rgba(200, 16, 46, 0.1);
+    background-color: #fff;
+}
+.form-control::placeholder {
+    color: #b0b8c4;
+}
+
+.input-group-text {
+    background-color: #fafafa;
+    border: 1.5px solid #e5e7eb;
+    border-radius: 10px 0 0 10px;
+    color: #9ca3af;
+}
+.input-group .form-control {
+    border-radius: 0 10px 10px 0;
+    border-left: none;
+}
+.input-group:focus-within .input-group-text,
+.input-group:focus-within .form-control {
+    border-color: #c8102e;
+}
+
+/* Plan cards */
+.plan-option { display: none; }
+.plan-label {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    border: 2px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 1rem 1.1rem;
+    cursor: pointer;
+    transition: border-color 0.2s, background-color 0.2s;
+    background-color: #fafafa;
+    height: 100%;
+}
+.plan-label:hover,
+.plan-option:checked + .plan-label {
+    border-color: #c8102e;
+    background-color: #fdf5f5;
+}
+.plan-label .plan-name {
+    font-weight: 700;
+    font-size: 0.95rem;
+}
+.plan-label .plan-price {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #c8102e;
+}
+.plan-label .plan-desc {
+    font-size: 0.75rem;
+    color: #6b7280;
+}
+.plan-label .plan-badge {
+    display: inline-block;
+    font-size: 0.65rem;
+    font-weight: 700;
+    background-color: #c8102e;
+    color: #fff;
+    border-radius: 100px;
+    padding: 2px 8px;
+    width: fit-content;
+}
+
+/* Specialisations */
+.spec-check { display: none; }
+.spec-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    border: 1.5px solid #e5e7eb;
+    border-radius: 100px;
+    padding: 6px 14px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    background-color: #fafafa;
+    color: #374151;
+    margin: 0 4px 8px 0;
+}
+.spec-label:hover {
+    border-color: #c8102e;
+    color: #c8102e;
+}
+.spec-check:checked + .spec-label {
+    border-color: #c8102e;
+    background-color: #fdf5f5;
+    color: #96281b;
+    font-weight: 600;
+}
+
+/* Password strength */
+.strength-bar {
+    height: 4px;
+    border-radius: 100px;
+    background-color: #e5e7eb;
+    overflow: hidden;
+}
+.strength-fill {
+    height: 100%;
+    border-radius: 100px;
+    width: 0%;
+    transition: width 0.3s ease, background-color 0.3s ease;
+}
+
+/* Submit button */
+.btn-register {
+    background-color: #c8102e;
+    border: 2px solid #96281b;
+    color: #fff;
+    font-weight: 700;
+    font-size: 1rem;
+    padding: 0.8rem 2rem;
+    border-radius: 12px;
+    width: 100%;
+    transition: background-color 0.2s, transform 0.15s;
+}
+.btn-register:hover {
+    background-color: #96281b;
+    border-color: #7b1a13;
+    color: #fff;
+    transform: translateY(-1px);
+}
+.btn-register:active {
+    background-color: #7b1a13;
+    border-color: #4a0f0c;
+    color: #fff;
+    transform: none;
+}
+
+/* Checkboxes */
+.form-check-input:checked {
+    background-color: #c8102e;
+    border-color: #c8102e;
+}
+.form-check-input:focus {
+    box-shadow: 0 0 0 3px rgba(200, 16, 46, 0.15);
+    border-color: #c8102e;
+}
+
+/* Social buttons */
+.btn-social {
+    border: 1.5px solid #e5e7eb;
+    border-radius: 10px;
+    background: #fff;
+    color: #374151;
+    font-size: 0.875rem;
+    font-weight: 500;
+    padding: 0.6rem 1rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    width: 100%;
+}
+.btn-social:hover {
+    border-color: #9ca3af;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    color: #111;
+}
+
+.divider-text {
+    font-size: 0.78rem;
+    color: #9ca3af;
+    position: relative;
+    text-align: center;
+}
+.divider-text::before,
+.divider-text::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    width: 42%;
+    height: 1px;
+    background-color: #e5e7eb;
+}
+.divider-text::before { left: 0; }
+.divider-text::after  { right: 0; }
+
+@media (max-width: 575.98px) {
+    .register-card { padding: 1.5rem; }
+}

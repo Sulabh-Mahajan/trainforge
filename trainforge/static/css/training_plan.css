@@ -1,0 +1,274 @@
+/* ── TOOLBAR ── */
+.search-input-group { width: 220px; }
+.search-input-group .input-group-text {
+    background-color: #fff;
+    border: 1.5px solid #e5e7eb;
+    border-radius: 10px 0 0 10px;
+    color: #9ca3af;
+}
+.search-input-group .form-control {
+    border: 1.5px solid #e5e7eb;
+    border-left: none;
+    border-radius: 0 10px 10px 0;
+    font-size: 0.875rem;
+    background-color: #fff;
+    padding: 0.5rem 0.85rem;
+}
+.search-input-group .form-control:focus {
+    border-color: #c8102e;
+    box-shadow: 0 0 0 3px rgba(200,16,46,0.08);
+}
+.search-input-group:focus-within .input-group-text { border-color: #c8102e; }
+.filter-select {
+    width: auto;
+    font-size: 0.875rem;
+    border: 1.5px solid #e5e7eb;
+    border-radius: 10px;
+    padding: 0.5rem 2rem 0.5rem 0.85rem;
+    background-color: #fff;
+    color: #374151;
+}
+.filter-select:focus {
+    border-color: #c8102e;
+    box-shadow: 0 0 0 3px rgba(200,16,46,0.08);
+}
+
+/* ── CREATE NEW PLAN BUTTON ── */
+@keyframes plan-btn-pulse {
+    0%   { box-shadow: 0 0 0 0   rgba(200,16,46,0.5), 0 3px 12px rgba(200,16,46,0.35); }
+    65%  { box-shadow: 0 0 0 8px rgba(200,16,46,0),   0 3px 12px rgba(200,16,46,0.35); }
+    100% { box-shadow: 0 0 0 0   rgba(200,16,46,0),   0 3px 12px rgba(200,16,46,0.35); }
+}
+.btn-add-plan {
+    position: relative; overflow: hidden;
+    background: linear-gradient(135deg, #e8182f 0%, #c8102e 55%, #a80d26 100%);
+    border: 2px solid #96281b;
+    color: #fff; font-size: 0.875rem; font-weight: 700;
+    letter-spacing: 0.25px; border-radius: 10px; padding: 0.5rem 1.25rem;
+    animation: plan-btn-pulse 2.4s ease-out infinite;
+    transition: transform 0.15s, box-shadow 0.2s, background 0.2s;
+}
+.btn-add-plan::after {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(110deg, transparent 38%, rgba(255,255,255,0.2) 50%, transparent 62%);
+    transform: translateX(-120%); transition: transform 0.45s ease; pointer-events: none;
+}
+.btn-add-plan:hover {
+    background: linear-gradient(135deg, #f01e36 0%, #d4112f 55%, #b50e28 100%);
+    border-color: #7b1a13; color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(200,16,46,0.45); animation: none;
+}
+.btn-add-plan:hover::after { transform: translateX(120%); }
+.btn-add-plan:active {
+    background: linear-gradient(135deg, #a80d26 0%, #96281b 100%);
+    border-color: #6b1610; color: #fff;
+    transform: translateY(0);
+    box-shadow: 0 2px 6px rgba(200,16,46,0.3);
+}
+
+/* ── PLAN CARDS ── */
+.plan-card {
+    background: #fff; border: 1.5px solid #e5e7eb; border-radius: 14px;
+    padding: 1.35rem 1.4rem 1.1rem; height: 100%;
+    display: flex; flex-direction: column;
+    transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+.plan-card:hover {
+    border-color: #c8102e;
+    box-shadow: 0 6px 24px rgba(200,16,46,0.1), 0 2px 8px rgba(0,0,0,0.05);
+    transform: translateY(-3px);
+}
+.plan-card-name { font-size: 0.97rem; font-weight: 700; color: #111827; line-height: 1.3; }
+.plan-card-meta { font-size: 0.72rem; color: #9ca3af; }
+.plan-card-desc { font-size: 0.82rem; color: #6b7280; line-height: 1.6; flex: 1; margin-bottom: 0; }
+.plan-card-footer { margin-top: 1rem; padding-top: 0.85rem; border-top: 1.5px solid #f0e0e0; }
+.plan-clients-label { font-size: 0.78rem; color: #9ca3af; }
+.plan-menu-btn {
+    background: transparent; border: 1.5px solid #e5e7eb; color: #9ca3af;
+    padding: 0.2rem 0.45rem; border-radius: 7px;
+    transition: border-color 0.2s, color 0.2s, background-color 0.2s;
+}
+.plan-menu-btn:hover { border-color: #c8102e; color: #c8102e; background-color: rgba(200,16,46,0.04); }
+
+/* ── BADGES ── */
+.goal-pill {
+    font-size: 0.68rem; font-weight: 700;
+    background-color: rgba(200,16,46,0.07); color: #96281b;
+    border: 1.5px solid rgba(200,16,46,0.2); border-radius: 100px; padding: 3px 10px;
+}
+.plan-level-pill {
+    font-size: 0.68rem; font-weight: 600;
+    background-color: #f3f4f6; color: #6b7280;
+    border: 1.5px solid #e5e7eb; border-radius: 100px; padding: 3px 10px;
+}
+.btn-assign-sm {
+    font-size: 0.75rem; font-weight: 600;
+    background-color: transparent; border: 1.5px solid #c8102e; color: #c8102e;
+    border-radius: 8px; padding: 4px 14px;
+    transition: background-color 0.2s, color 0.2s, box-shadow 0.2s;
+}
+.btn-assign-sm:hover {
+    background-color: #c8102e; border-color: #c8102e; color: #fff;
+    box-shadow: 0 3px 10px rgba(200,16,46,0.25);
+}
+
+/* ── BACK BUTTON ── */
+.btn-back {
+    background: transparent; border: 1.5px solid #e5e7eb; color: #374151;
+    font-size: 0.875rem; font-weight: 500; border-radius: 10px; padding: 0.45rem 1rem;
+    transition: border-color 0.2s, color 0.2s;
+}
+.btn-back:hover { border-color: #c8102e; color: #c8102e; }
+
+/* ── CREATE FORM ── */
+.create-form-card {
+    background: #fff; border: 1.5px solid #e5e7eb;
+    border-radius: 14px; padding: 2rem; max-width: 900px;
+}
+.form-section-label {
+    font-size: 0.7rem; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 1.2px; color: #c8102e; border-bottom: 1.5px solid #f0e0e0;
+}
+.plan-input {
+    border: 1.5px solid #e5e7eb; border-radius: 10px; font-size: 0.875rem;
+    background-color: #fafafa; padding: 0.6rem 0.85rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+.plan-input:focus {
+    border-color: #c8102e; box-shadow: 0 0 0 3px rgba(200,16,46,0.08); background-color: #fff;
+}
+.plan-input::placeholder { color: #b0b8c4; }
+
+/* ── EXERCISE ROWS ── */
+.exercise-row {
+    background-color: #fafafa; border: 1.5px solid #e5e7eb;
+    border-radius: 12px; padding: 1rem 1.1rem; transition: border-color 0.2s;
+}
+.exercise-row:focus-within { border-color: rgba(200,16,46,0.35); }
+.exercise-number { font-size: 0.75rem; font-weight: 700; color: #c8102e; text-transform: uppercase; letter-spacing: 0.5px; }
+.btn-remove-exercise {
+    background: transparent; border: 1.5px solid #e5e7eb; color: #9ca3af;
+    border-radius: 8px; padding: 0.2rem 0.5rem; font-size: 0.8rem;
+    transition: border-color 0.2s, color 0.2s, background-color 0.2s;
+}
+.btn-remove-exercise:hover:not(:disabled) { border-color: #ef4444; color: #ef4444; background-color: rgba(239,68,68,0.05); }
+.btn-remove-exercise:disabled { opacity: 0.3; cursor: not-allowed; }
+.btn-add-exercise {
+    background: transparent; border: 1.5px dashed #c8102e; color: #c8102e;
+    font-size: 0.875rem; font-weight: 600; border-radius: 10px; padding: 0.55rem 1.2rem;
+    transition: background-color 0.2s;
+}
+.btn-add-exercise:hover { background-color: rgba(200,16,46,0.05); color: #c8102e; }
+
+/* ── FORM ACTIONS ── */
+.btn-save-plan {
+    background-color: #c8102e; border: 2px solid #96281b; color: #fff;
+    font-size: 0.9rem; font-weight: 700; border-radius: 10px; padding: 0.65rem 1.5rem;
+    transition: background-color 0.2s, transform 0.15s;
+}
+.btn-save-plan:hover { background-color: #96281b; border-color: #7b1a13; color: #fff; transform: translateY(-1px); }
+.btn-cancel-plan {
+    background: transparent; border: 1.5px solid #e5e7eb; color: #6b7280;
+    font-size: 0.9rem; font-weight: 500; border-radius: 10px; padding: 0.65rem 1.5rem;
+    transition: border-color 0.2s, color 0.2s;
+}
+.btn-cancel-plan:hover { border-color: #9ca3af; color: #374151; }
+
+/* ── ASSIGN PANEL OVERLAY ── */
+.panel-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0,0,0,0.35);
+    z-index: 1050;
+}
+.panel-overlay.active { display: block; }
+
+/* ── ASSIGN SIDE PANEL ── */
+.side-panel {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 380px;
+    height: 100vh;
+    background-color: #fff;
+    border-left: 1.5px solid #e5e7eb;
+    box-shadow: -6px 0 32px rgba(0,0,0,0.10);
+    z-index: 1060;
+    /* hidden off screen to the right */
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+/* THIS is the class the JS adds — must match */
+.side-panel.panel-open {
+    transform: translateX(0);
+}
+
+.panel-header {
+    flex-shrink: 0;
+    background: #fff;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+.panel-close-btn {
+    background: transparent; border: 1.5px solid #e5e7eb;
+    border-radius: 8px; color: #6b7280; padding: 0.25rem 0.5rem;
+    transition: border-color 0.2s, background-color 0.2s;
+}
+.panel-close-btn:hover { border-color: #9ca3af; background-color: #f3f4f6; color: #111; }
+.panel-body { overflow-y: auto; flex: 1; }
+
+/* ── PANEL INTERNALS ── */
+.panel-section-title {
+    font-size: 0.68rem; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 1px; color: #c8102e;
+    padding-bottom: 0.4rem; border-bottom: 1.5px solid #f0e0e0;
+}
+
+/* Client rows */
+.assign-client-row {
+    display: flex; align-items: center; justify-content: space-between;
+    background-color: #fafafa; border: 1.5px solid #e5e7eb;
+    border-radius: 10px; padding: 0.65rem 0.9rem;
+    cursor: pointer; transition: border-color 0.2s, background-color 0.2s;
+    margin-bottom: 0; /* override label margin */
+}
+.assign-client-row:hover { border-color: #c8102e; background-color: #fdf5f5; }
+.assign-client-row:has(input:checked) {
+    border-color: #c8102e;
+    background-color: rgba(200,16,46,0.05);
+}
+.assign-avatar {
+    width: 34px; height: 34px; border-radius: 50%;
+    background-color: rgba(200,16,46,0.1); color: #c8102e;
+    font-size: 0.68rem; font-weight: 700;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.assign-radio { accent-color: #c8102e; width: 16px; height: 16px; flex-shrink: 0; cursor: pointer; }
+
+/* Panel buttons */
+.btn-panel-primary {
+    background-color: #c8102e; border: 2px solid #96281b; color: #fff;
+    font-size: 0.875rem; font-weight: 600; border-radius: 10px; padding: 0.6rem 1rem;
+    transition: background-color 0.2s;
+}
+.btn-panel-primary:hover { background-color: #96281b; border-color: #7b1a13; color: #fff; }
+.btn-panel-outline {
+    background-color: transparent; border: 1.5px solid #e5e7eb; color: #374151;
+    font-size: 0.875rem; font-weight: 600; border-radius: 10px; padding: 0.6rem 1rem;
+    transition: border-color 0.2s, color 0.2s;
+}
+.btn-panel-outline:hover { border-color: #c8102e; color: #c8102e; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 575.98px) {
+    .side-panel { width: 100%; }
+    .search-input-group { width: 100%; }
+    .create-form-card { padding: 1.25rem; }
+}
