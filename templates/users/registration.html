@@ -254,7 +254,7 @@
                     </div>
                     <div class="row g-3 mb-4">
                         <div class="col-sm-4">
-                            <input type="radio" class="plan-option" name="plan" id="planStarter" value="Free"    {% if form_data.plan == 'Free'    %}checked{% endif %} />
+                            <input type="radio" class="plan-option" name="plan" id="planStarter" value="free"    {% if form_data.plan == 'Free'    %}checked{% endif %} />
                             <label class="plan-label" for="planStarter">
                                 <span class="plan-name">Starter</span>
                                 <span class="plan-price">Free</span>
@@ -262,7 +262,7 @@
                             </label>
                         </div>
                         <div class="col-sm-4">
-                            <input type="radio" class="plan-option" name="plan" id="planPro" value="Pro"         {% if form_data.plan == 'Pro' or not form_data %}checked{% endif %} />
+                            <input type="radio" class="plan-option" name="plan" id="planPro" value="pro"         {% if form_data.plan == 'Pro' or not form_data %}checked{% endif %} />
                             <label class="plan-label" for="planPro">
                                 <span class="plan-badge">Most popular</span>
                                 <span class="plan-name">Pro</span>
@@ -271,7 +271,7 @@
                             </label>
                         </div>
                         <div class="col-sm-4">
-                            <input type="radio" class="plan-option" name="plan" id="planElite" value="Elite"     {% if form_data.plan == 'Elite' %}checked{% endif %} />
+                            <input type="radio" class="plan-option" name="plan" id="planElite" value="elite"     {% if form_data.plan == 'Elite' %}checked{% endif %} />
                             <label class="plan-label" for="planElite">
                                 <span class="plan-name">Elite</span>
                                 <span class="plan-price">$79<span class="text-secondary fw-normal" style="font-size: 0.75rem">/mo</span></span>
