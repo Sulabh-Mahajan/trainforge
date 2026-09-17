@@ -1,0 +1,29 @@
+[
+  {
+    "model": "users.subscription",
+    "pk": 1,
+    "fields": {
+      "plan_name": "free",
+      "max_customers": 5,
+      "ai_included": false
+    }
+  },
+  {
+    "model": "users.subscription",
+    "pk": 2,
+    "fields": {
+      "plan_name": "pro",
+      "max_customers": 25,
+      "ai_included": false
+    }
+  },
+  {
+    "model": "users.subscription",
+    "pk": 3,
+    "fields": {
+      "plan_name": "elite",
+      "max_customers": 1000,
+      "ai_included": true
+    }
+  }
+]
