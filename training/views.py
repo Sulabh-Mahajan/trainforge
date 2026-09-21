@@ -190,7 +190,7 @@ Rules:
             return JsonResponse({'error': 'API key not configured.'}, status=500)
 
         payload = json.dumps({
-            'model': 'gemini-2.5-flash',
+            'model': 'gemini-3.6-flash',
             'messages'   : [{'role': 'user', 'content': prompt}],
             'temperature': 0.7,
             'max_completion_tokens': 1500,
