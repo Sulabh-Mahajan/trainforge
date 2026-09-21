@@ -190,14 +190,14 @@ Rules:
             return JsonResponse({'error': 'API key not configured.'}, status=500)
 
         payload = json.dumps({
-            'model': 'gpt-5.4-mini',
+            'model': 'gemini-2.5-flash',
             'messages'   : [{'role': 'user', 'content': prompt}],
             'temperature': 0.7,
             'max_completion_tokens': 1500,
         }).encode('utf-8')
 
         req = urllib.request.Request(
-            'https://api.openai.com/v1/chat/completions',
+            'https://generativelanguage.googleapis.com/v1beta/openai/chat/completions',
             data    = payload,
             headers = {
                 'Content-Type' : 'application/json',
